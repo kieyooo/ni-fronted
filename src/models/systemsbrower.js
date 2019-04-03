@@ -4,7 +4,6 @@ import { serializeTableData, serializeBrowserData } from '@/utils/serializeData'
 export default {
   namespace: 'systemsbrower',
   state: {
-    iserror: false,
     tableData: [],
     browserData: [],
   },

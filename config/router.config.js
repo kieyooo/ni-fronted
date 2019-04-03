@@ -26,7 +26,8 @@ export default [
         component: './SystemBoard/workshop_one',
       },
       {
-        path: '/device/:id',
+        path: '/device/:path',
+        component: './SystemBoard/workshop_two'
       },
       //生产信息管理
       {
