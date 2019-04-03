@@ -30,7 +30,7 @@ class WorkShopTwo extends Component {
     const data = browserData.length === 0  ? {} : browserData.filter(value => value.MinionID === match.params.path)[0]
     return (
       <PageHeaderWrapper>
-        <Card loading={getting}>
+        <Card loading={getting} title='系统设置'>
           <Row>
             <Col xs={8} md={4} style={{fontWeight:'700'}}>主机名:</Col>
             {data.Connection === "已连接" ? (
