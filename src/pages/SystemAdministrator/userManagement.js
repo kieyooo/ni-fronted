@@ -4,6 +4,6 @@ export default class UserManagement extends React.Component {
   componentDidMount() {}
 
   render() {
-    return <div>sssssss</div>;
+    return <div />;
   }
 }

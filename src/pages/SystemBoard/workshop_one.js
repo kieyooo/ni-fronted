@@ -27,9 +27,9 @@ class DeviceList extends Component {
   };
 
   render() {
-    const Info = ({ title, value, bordered }) => (
+    const Info = ({ title, value, bordered, type, color  }) => (
       <div className={styles.headerInfo}>
-        <span>{title}</span>
+        <span><Icon type={type} style={{marginRight:'8px'}} theme="twoTone" twoToneColor={color} />{title}</span>
         <p>{value}</p>
         {bordered && <em />}
       </div>
@@ -41,13 +41,13 @@ class DeviceList extends Component {
           <Card bordered={false} style={{ marginBottom: '10px' }}>
             <Row>
               <Col sm={8} xs={24}>
-                <Info title="设备总量" value={`${connected + disconnected}台`} bordered />
+                <Info title="设备总量" value={`${connected + disconnected}台`} bordered type="pie-chart" />
               </Col>
               <Col sm={8} xs={24}>
-                <Info title="已连接" value={`${connected}台`} bordered />
+                <Info title="已连接" value={`${connected}台`} bordered type='check-circle' color="#52c41a" />
               </Col>
               <Col sm={8} xs={24}>
-                <Info title="未连接" value={`${disconnected}台`} />
+                <Info title="未连接" value={`${disconnected}台`} type="close-circle" color="#eb2f96" />
               </Col>
             </Row>
           </Card>

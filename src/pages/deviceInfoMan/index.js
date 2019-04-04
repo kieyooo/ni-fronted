@@ -16,7 +16,6 @@ class DeviceTagInfo extends React.Component {
     })
   }
 
-
   render() {
     const columns = [{
       title: '路径',
@@ -41,7 +40,7 @@ class DeviceTagInfo extends React.Component {
       <PageHeaderWrapper>
         <Card>
           <Row>
-            <Col>
+            <Col span={24}>
               <Table 
                 columns={columns} 
                 dataSource={data} 
