@@ -1,15 +1,15 @@
 import qs from 'qs';
+import router from 'umi/router'
 import notificate from './notification';
-
-
 
 // 强制退出
 function passiveLogout() {
   // @HACK
   /* eslint-disable no-underscore-dangle */
-  window.g_app._store.dispatch({
-    type: 'login/logout',
-  });
+  // window.g_app._store.dispatch({
+  //   type: 'login/logout',
+  // });
+  router.push('/user/login')
   notificate('error', '警告' ,'Cookie失效,请重新登陆')
 }
 

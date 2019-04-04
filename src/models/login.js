@@ -1,6 +1,6 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import logout from '@/services/logout'
+// import logout from '@/services/logout'
 import * as service from '@/services/login'
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -41,8 +41,8 @@ export default {
       }
     },
 
-    *logout(_, { put,  call }) {
-      yield call(logout);
+    *logout(_, { put, call }) {
+      yield call(service.logout);
       yield put({
         type: 'changeLoginStatus',
         payload: {

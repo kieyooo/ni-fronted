@@ -10,3 +10,7 @@ export async function login(query) {
 export async function ping() {
   return request(false, "GET", '/api/sysmgmt/ping')
 }
+
+export async function logout() {
+  return request(false, "GET", '/api/login/logout');
+}
