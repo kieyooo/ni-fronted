@@ -59,7 +59,6 @@ export default {
           })
         );
       }
-      yield call(service.logout)
     },
   },
 
