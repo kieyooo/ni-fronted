@@ -5,7 +5,8 @@ export default {
   namespace: 'tag',
   state : {
     data: [],
-    tag: {}
+    tag: {},
+    tagIsLBH: []
   },
   effects: {
     *tag(_, { put, call }) {
@@ -18,6 +19,10 @@ export default {
     *getTagByPath({ payload }, { put , call }) {
       const res = yield call(service.getTagByPath, payload);
       yield put({ type: 'updateTag', payload: { tag: res }})
+    },
+    *getTagIsLBH(_, { put ,call }){
+      const res = yield call(service.getTagIsLBH);
+      yield put({ type: 'updateTagIsLBH', payload: {data: res}})
     },
     *clearTag(_, { put }){
       yield put({type: 'updateTag', payload: { tag: {} }})
@@ -32,6 +37,11 @@ export default {
     updateTag(state, { payload }) {
       return {
         ...state, tag : payload.tag
+      }
+    },
+    updateTagIsLBH(state, { payload }) {
+      return {
+        ...state, tagIsLBH : payload.data
       }
     }
   }
