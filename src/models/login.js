@@ -54,12 +54,7 @@ export default {
       // redirect
       if (window.location.pathname !== '/user/login') {
         yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          })
+          routerRedux.replace('/user/login')
         );
       }
     },
