@@ -1,4 +1,5 @@
 import { routerRedux } from 'dva/router';
+import router from 'umi/router'
 import { stringify } from 'qs';
 import * as service from '@/services/login'
 import { setAuthority } from '@/utils/authority';
@@ -52,14 +53,15 @@ export default {
       reloadAuthorized();
       // redirect
       if (window.location.pathname !== '/user/login') {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          })
-        );
+        // yield put(
+        //   routerRedux.replace({
+        //     pathname: '/user/login',
+        //     search: stringify({
+        //       redirect: window.location.href,
+        //     }),
+        //   })
+        // );
+        router.push('/user/login')
       }
     },
   },
