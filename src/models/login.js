@@ -1,6 +1,5 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-// import logout from '@/services/logout'
 import * as service from '@/services/login'
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
@@ -54,7 +53,12 @@ export default {
       // redirect
       if (window.location.pathname !== '/user/login') {
         yield put(
-          routerRedux.replace('/user/login')
+          routerRedux.replace({
+            pathname: '/user/login',
+            search: stringify({
+              redirect: window.location.href,
+            }),
+          })
         );
       }
     },
