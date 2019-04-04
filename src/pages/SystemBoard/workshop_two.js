@@ -4,9 +4,8 @@ import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import { isArray } from 'util';
 
-@connect(({systemsbrower, loading }) => ({
+@connect(({ systemsbrower }) => ({
   ...systemsbrower,
-  getting: loading.effects['systemsbrower/getBrowserData']
 }))
 class WorkShopTwo extends Component {
   componentDidMount() {
@@ -14,6 +13,15 @@ class WorkShopTwo extends Component {
     dispatch({
       type: 'systemsbrower/getBrowserData'
     })
+    this.timer = setInterval(() => {
+      dispatch({
+        type: 'systemsbrower/getBrowserData'
+      })
+    }, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer)
   }
 
   ipadressToCol = (params,params1) => {
@@ -26,11 +34,11 @@ class WorkShopTwo extends Component {
   }
 
   render() {
-    const { browserData, getting, match } = this.props;
+    const { browserData, match } = this.props;
     const data = browserData.length === 0  ? {} : browserData.filter(value => value.MinionID === match.params.path)[0]
     return (
       <PageHeaderWrapper>
-        <Card loading={getting} title='系统设置'>
+        <Card loading={Object.keys(data).length === 0} title='系统设置'>
           <Row>
             <Col xs={8} md={4} style={{fontWeight:'700'}}>主机名:</Col>
             {data.Connection === "已连接" ? (

@@ -4,9 +4,8 @@ import { connect } from 'dva'
 import tableSort from '@/utils/tableSort'
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
-@connect(({tag, loading}) => ({
-  ...tag,
-  loading: loading.effects['tag/tag']
+@connect(({ tag }) => ({
+  ...tag
 }))
 class DeviceTagInfo extends React.Component {
   componentDidMount() {
@@ -14,6 +13,13 @@ class DeviceTagInfo extends React.Component {
     dispatch({
       type: 'tag/tag'
     })
+    this.timer = setInterval(() => {
+      dispatch({ type: 'tag/tag' })
+    }, 3000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer)
   }
 
   render() {
@@ -34,8 +40,7 @@ class DeviceTagInfo extends React.Component {
       dataIndex: 'Updated',
       sorter: (a, b) => tableSort(a.Updated, b.Updated),
     }];
-    const { data, loading } = this.props;
-    // data.forEach((value,index) => (value.key = index))
+    const { data } = this.props;
     return (
       <PageHeaderWrapper>
         <Card>
@@ -44,9 +49,10 @@ class DeviceTagInfo extends React.Component {
               <Table 
                 columns={columns} 
                 dataSource={data} 
-                loading={loading} 
-                pagination={{defaultPageSize:15,hideOnSinglePage:'ture',
-                  showQuickJumper: 'ture',pageSizeOptions: ['10','15','25','35'],showSizeChanger: 'ture'}} 
+                rowKey="Path"
+                loading={data.length === 0} 
+                pagination={{defaultPageSize:15,hideOnSinglePage:true,
+                  showQuickJumper:true ,pageSizeOptions: ['10','15','25','35'],showSizeChanger: true}} 
               />
             </Col>
           </Row>

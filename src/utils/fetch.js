@@ -1,5 +1,18 @@
-import router from 'umi/router';
 import qs from 'qs';
+import notificate from './notification';
+
+
+
+// 强制退出
+function passiveLogout() {
+  // @HACK
+  /* eslint-disable no-underscore-dangle */
+  window.g_app._store.dispatch({
+    type: 'login/logout',
+  });
+  notificate('error', '警告' ,'Cookie失效,请重新登陆')
+}
+
 /**
  * @param {boolean} true => response.json() false => response
  * @param {string} method
@@ -54,7 +67,4 @@ export default async function request(isJSON, method, url, body, header) {
   return fetch(url, options).then(response => response);
 }
 
-// 强制退出
-function passiveLogout() {
-  router.push('/user/login');
-}
+
