@@ -76,14 +76,14 @@ class DeviceList extends Component {
                     <Row>
                       <Col span={24}>
                         <Row>
-                          <Col span={10}>连接状态：</Col>
-                          <Col span={14}>{item.Connection}</Col>
+                          <Col xs={9} sm={12} md={8} lg={8} style={{fontWeight:'bolder'}}>连接状态：</Col>
+                          <Col xs={15} sm={12} md={16} lg={16}>{item.Connection}</Col>
                         </Row>
                       </Col>
                       <Col span={24}>
                         <Row>
-                          <Col span={10}>开始时间：</Col>
-                          <Col span={14}>{item.SystemStartTime}</Col>
+                          <Col xs={9} sm={12} md={8} lg={8} style={{fontWeight:'bolder'}}>开始时间：</Col>
+                          <Col xs={15} sm={12} md={16} lg={16}>{item.SystemStartTime}</Col>
                         </Row>
                       </Col>
                     </Row>

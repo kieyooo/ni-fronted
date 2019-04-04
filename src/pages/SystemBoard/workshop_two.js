@@ -6,7 +6,7 @@ import { isArray } from 'util';
 
 @connect(({systemsbrower, loading }) => ({
   ...systemsbrower,
-  // getting: loading.effects['systemsbrower/getBrowserData']
+  getting: loading.effects['systemsbrower/getBrowserData']
 }))
 class WorkShopTwo extends Component {
   componentDidMount() {
@@ -45,7 +45,7 @@ class WorkShopTwo extends Component {
           </Row>
           <Row style={{ marginTop: "10px" }}>
             <Col xs={8} md={4} style={{fontWeight:'700'}}>IP地址:</Col>
-            <Col xs={10} md={12}>
+            <Col xs={16} md={20}>
               {this.ipadressToCol(data.IPAddress, data.hwaddr_interfaces)
                 ?this.ipadressToCol(data.IPAddress, data.hwaddr_interfaces)
                 : '无法使用'}
