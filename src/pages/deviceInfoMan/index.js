@@ -13,14 +13,14 @@ class DeviceTagInfo extends React.Component {
     dispatch({
       type: 'tag/tag'
     })
-    this.timer = setInterval(() => {
-      dispatch({ type: 'tag/tag' })
-    }, 3000);
+    // this.timer = setInterval(() => {
+    //   dispatch({ type: 'tag/tag' })
+    // }, 3000);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer)
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.timer)
+  // }
 
   render() {
     const columns = [{

@@ -20,15 +20,15 @@ class DeviceList extends Component {
     const { dispatch } = this.props;
     dispatch({ type: 'systemsmanagement/getManagedNumber' });
     dispatch({ type: 'systemsbrower/gettableData' });
-    this.timer = setInterval(() => {
-      dispatch({ type: 'systemsmanagement/getManagedNumber' });
-      dispatch({ type: 'systemsbrower/gettableData' });
-    }, 3000);
+    // this.timer = setInterval(() => {
+    //   dispatch({ type: 'systemsmanagement/getManagedNumber' });
+    //   dispatch({ type: 'systemsbrower/gettableData' });
+    // }, 3000);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.timer);
+  // }
 
   runTo = path => {
     router.push(`/device/${path}`);

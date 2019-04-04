@@ -13,16 +13,16 @@ class WorkShopTwo extends Component {
     dispatch({
       type: 'systemsbrower/getBrowserData'
     })
-    this.timer = setInterval(() => {
-      dispatch({
-        type: 'systemsbrower/getBrowserData'
-      })
-    }, 3000);
+    // this.timer = setInterval(() => {
+    //   dispatch({
+    //     type: 'systemsbrower/getBrowserData'
+    //   })
+    // }, 3000);
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer)
-  }
+  // componentWillUnmount() {
+  //   clearInterval(this.timer)
+  // }
 
   ipadressToCol = (params,params1) => {
     return  isArray(params) && params.length !== 0 ? params.map((value, index) => {
