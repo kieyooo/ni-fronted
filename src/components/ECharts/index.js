@@ -8,7 +8,7 @@ class MyECharts extends Component {
   componentDidMount(){
     const myEChart = echarts.init(document.getElementById('ECharts'));
     this.myEChart = myEChart;
-    const { CurrentData, VoltageData } = this.props;
+    const { CurrentData, VoltageData, TimeData } = this.props;
     myEChart.setOption( {
       tooltip: {
           trigger: 'axis'
@@ -30,7 +30,7 @@ class MyECharts extends Component {
       xAxis: {
           type: 'category',
           boundaryGap: false,
-          data: ['一','二','三','四','五','六']
+          data: TimeData || []
       },
       yAxis: {
           type: 'value'
@@ -53,8 +53,13 @@ class MyECharts extends Component {
   }
 
   componentWillReceiveProps() {
-    const { CurrentData, VoltageData } = this.props;
+    const { CurrentData, VoltageData, TimeData } = this.props;
     this.myEChart.setOption({
+        xAxis: {
+            type: 'category',
+            boundaryGap: false,
+            data: TimeData || []
+        },
         series: [
             {
                 name:'电流',

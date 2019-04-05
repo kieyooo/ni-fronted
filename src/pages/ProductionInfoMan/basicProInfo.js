@@ -9,32 +9,61 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
   tagIsLBH : tag.tagIsLBH
 }))
 class BasicProInfo extends React.Component {
+  state = {
+    tagdata : [
+    ]
+  }
+
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: 'tag/getTagIsLBH'});
+    this.timer = setInterval(() => {
+      dispatch({ type: 'tag/getTagIsLBH'});
+    }, 3000);
   }
 
-  tagDataAddToChart = (data) => {
-    const newData = [
-      {}
-    ];
-
-    return newData
+  componentWillUnmount() {
+    clearInterval(this.timer)
   }
+
+  tagDataAddToChart = (newdata,index) => {
+    const { tagdata } = this.state;
+    if(newdata[0].length === 0 ) return tagdata[index];
+    // if(newdata[0][index].values === tagdata[index].y1 && newdata[1][index].values === tagdata[index].y2) return tagdata[index]
+    // const len = tagdata[index] ?  1 : 0;
+    const data = {
+        x: new Date().getTime(),
+        y1: toFixed(newdata[0][index].values,1),
+        y2: toFixed(newdata[1][index].values,1)
+    }
+    if(Array.isArray(tagdata[index])) {
+      tagdata[index].push(data)
+    } else {
+      tagdata[index] = [data]
+    }
+    if(tagdata[index].length > 20 ) tagdata[index].shift();
+    return tagdata[index]
+  }
+
+
 
   render() {
     const { tagIsLBH } = this.props;
+    const { tagDataAddToChart } = this
+    
     return (
       <PageHeaderWrapper>
+        
         {tagIsLBH[0] ? (
           <Row>
             {tagIsLBH[0].map((value,index) => {
             return (
-              <Col xs={24} md={12} lg={8} key={index.toString()}>
-                <Card style={{marginBottom:'8px',marginRight:'8px'}}>
+              <Col xs={24} md={12} lg={12} key={index.toString()}>
+                <Card style={{marginBottom:'10px',marginRight:'10px'}}>
+                  
                   <TimelineChart 
                     height={300}
-                    data={[{x:(new Date().getTime()) + (1000 * 60 * 30),y1:toFixed(value.values,1), y2:toFixed(tagIsLBH[1][index].values,1)}]}
+                    data={tagDataAddToChart(tagIsLBH,index)}
                     titleMap={{y1: '电流', y2: '电压'}}
                   />
                 </Card>
