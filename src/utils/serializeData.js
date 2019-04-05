@@ -98,7 +98,7 @@ function connectdStatus(status) {
   }
 }
 
-function toFixed(string, number) {
+export function toFixed(string, number) {
   const tryToNumber = Number(string);
   if (isNaN(tryToNumber)) {
     return string;

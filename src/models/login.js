@@ -39,7 +39,7 @@ export default {
         yield put(routerRedux.replace(redirect || '/'));
       }
     },
-    *logout(_, { put, call }) {
+    *logout(_, { put }) {
       yield put({
         type: 'changeLoginStatus',
         payload: {
