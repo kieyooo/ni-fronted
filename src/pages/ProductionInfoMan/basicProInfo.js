@@ -59,7 +59,7 @@ class BasicProInfo extends React.Component {
             {tagIsLBH[0].map((value,index) => {
             return (
               <Col xs={24} md={12} lg={12} key={index.toString()}>
-                <Card style={{marginBottom:'10px',marginRight:'10px'}}>
+                <Card style={{marginBottom:'10px',marginRight:'10px'}} title={`LBH${index}`}>
                   
                   <TimelineChart 
                     height={300}
