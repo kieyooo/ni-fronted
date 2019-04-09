@@ -11,7 +11,7 @@ class TimelineChart extends React.Component {
     const {
       title,
       height = 400,
-      padding = [60, 20, 40, 40],
+      padding = [60, 25, 40, 40],
       titleMap = {
         y1: 'y1',
         y2: 'y2',

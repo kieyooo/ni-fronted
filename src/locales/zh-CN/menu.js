@@ -4,6 +4,7 @@ export default {
   'menu.MainMenu': '主菜单',
   'menu.register.result': '注册结果',
   'menu.systemBoard': '系统总览',
+  'menu.systemSetting': '设备详情',
   'menu.productionInfoMan': '生产信息管理',
   'menu.productionInfoMan.basicProInfo': '基本生产信息',
   'menu.deviceInfoMan': '设备信息管理',

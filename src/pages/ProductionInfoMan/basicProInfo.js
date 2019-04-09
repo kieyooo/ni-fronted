@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, Row, Col } from 'antd'
+import { Card, Row, Col, Tag } from 'antd'
 import { TimelineChart } from '@/components/Charts'
 import { connect } from 'dva'
 import { toFixed } from '@/utils/serializeData'
@@ -57,19 +57,32 @@ class BasicProInfo extends React.Component {
         {tagIsLBH[0] ? (
           <Row>
             {tagIsLBH[0].map((value,index) => {
-            return (
-              <Col xs={24} md={12} lg={12} key={index.toString()}>
-                <Card style={{marginBottom:'10px',marginRight:'10px'}} title={`LBH${index}`}>
-                  
-                  <TimelineChart 
-                    height={300}
-                    data={tagDataAddToChart(tagIsLBH,index)}
-                    titleMap={{y1: '电流', y2: '电压'}}
-                  />
-                </Card>
-              </Col> 
-            )
-          } )}
+              return (
+                <Col xs={24} md={12} lg={12} key={index.toString()}>
+                  <Card style={{marginBottom:'10px',marginRight:'10px'}} title={`LBH${index}`}>
+                    <Row>
+                      <Col span={12}>
+                        <Row>
+                          <Col xs={6} md={6} xl={4}>电流:</Col>
+                          <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[0][index].values,1)}</Tag></Col>
+                        </Row>
+                      </Col>
+                      <Col span={12}>
+                        <Row>
+                          <Col xs={6} md={6} xl={4}>电压:</Col>
+                          <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[1][index].values,1)}</Tag></Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <TimelineChart 
+                      height={300}
+                      data={tagDataAddToChart(tagIsLBH,index)}
+                      titleMap={{y1: '电流', y2: '电压'}}
+                    />
+                  </Card>
+                </Col> 
+              )
+            } )}
           </Row>
           
         ): null}

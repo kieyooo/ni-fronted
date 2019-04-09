@@ -3,7 +3,7 @@ import { Row, Col } from 'antd'
 import styles from './index.less'
 import echarts from './EChartsImport'
 
-
+// 实例
 class MyECharts extends Component {
   componentDidMount(){
     const myEChart = echarts.init(document.getElementById('ECharts'));

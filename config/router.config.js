@@ -27,6 +27,8 @@ export default [
       },
       {
         path: '/device/:path',
+        name: 'systemSetting',
+        hideInMenu:true,
         component: './SystemBoard/workshop_two'
       },
       //生产信息管理
