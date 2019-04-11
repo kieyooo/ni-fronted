@@ -86,9 +86,9 @@ export default class SiderMenu extends PureComponent {
         </div>
         <Card className={styles.touxiang}>
           <Meta
-            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  />}
+            avatar={<Avatar src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" />}
             title="admin"
-            description={<span style={{color:'#00a65a'}}>在线</span>}
+            description={<span style={{color:'#00a65a',fontSize:'13px'}}>在线中</span>}
             style={{height:'30px'}}
           />
         </Card>
