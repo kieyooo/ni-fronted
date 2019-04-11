@@ -104,7 +104,8 @@ export default [
         path: '/myMessage',
         name: 'mymessage',
         icon: 'mail',
-        component: './MyMessage'
+        component: './MyMessage',
+        showMessage: true,
       },
       {
         component: '404',

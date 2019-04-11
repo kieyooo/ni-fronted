@@ -84,14 +84,14 @@ export default class SiderMenu extends PureComponent {
             <h1>{title}</h1>
           </Link>
         </div>
-        {/* <Card className={styles.touxiang}>
+        <Card className={styles.touxiang}>
           <Meta
-            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  />}
             title="admin"
-            description="online"
-            style={{paddingTop:'0px',marginTop:'0px'}}
+            description={<span style={{color:'#00a65a'}}>在线</span>}
+            style={{height:'30px'}}
           />
-        </Card> */}
+        </Card>
         <Suspense fallback={<PageLoading />}>
           <BaseMenu
             {...this.props}
