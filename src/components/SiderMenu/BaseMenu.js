@@ -119,9 +119,9 @@ class BaseMenu extends PureComponent {
         <span>{name}</span> 
         {item.showMessage && 
           <span>
-            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'8px',backgroundColor: '#87d068'}} />
-            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'8px',backgroundColor: '#ffc53d'}}  />
-            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'8px'}} />
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'32px',backgroundColor: '#87d068'}} />
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'4px',backgroundColor: '#ffc53d'}}  />
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'4px'}} />
           </span>  }    
       </Link>
     );
