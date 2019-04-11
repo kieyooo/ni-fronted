@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
+import { connect } from "dva";
 import classNames from 'classnames';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, Badge } from 'antd';
 import Link from 'umi/link';
 import { urlToList } from '../_utils/pathTools';
 import { getMenuMatches } from './SiderMenuUtils';
@@ -28,7 +29,10 @@ const getIcon = icon => {
   return icon;
 };
 
-export default class BaseMenu extends PureComponent {
+@connect(({ global }) => ({
+  global
+}))
+class BaseMenu extends PureComponent {
   /**
    * 获得菜单子节点
    * @memberof SiderMenu
@@ -54,6 +58,8 @@ export default class BaseMenu extends PureComponent {
    */
   getSubMenuOrItem = item => {
     // doc: add hideChildrenInMenu
+    console.warn(item);
+    
     if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
       const { name } = item;
       return (
@@ -97,6 +103,7 @@ export default class BaseMenu extends PureComponent {
       );
     }
     const { location, isMobile, onCollapse } = this.props;
+    const { global } = this.props;
     return (
       <Link
         to={itemPath}
@@ -111,7 +118,11 @@ export default class BaseMenu extends PureComponent {
         }
       >
         {icon}
-        <span>{name}</span>
+        <span>{name}</span> 
+        {item.showMessage && 
+          <span>
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'8px'}} />
+          </span>  }    
       </Link>
     );
   };
@@ -148,6 +159,8 @@ export default class BaseMenu extends PureComponent {
       'top-nav-menu': mode === 'horizontal',
     });
 
+
+
     return (
       <Menu
         key="Menu"
@@ -164,3 +177,4 @@ export default class BaseMenu extends PureComponent {
     );
   }
 }
+export default BaseMenu

@@ -1,5 +1,5 @@
 import React, { PureComponent, Suspense } from 'react';
-import { Layout } from 'antd';
+import { Layout, Card, Avatar } from 'antd';
 import classNames from 'classnames';
 import Link from 'umi/link';
 import styles from './index.less';
@@ -9,6 +9,7 @@ import { title } from '../../defaultSettings';
 
 const BaseMenu = React.lazy(() => import('./BaseMenu'));
 const { Sider } = Layout;
+const { Meta } = Card;
 
 let firstMount = true;
 
@@ -83,6 +84,14 @@ export default class SiderMenu extends PureComponent {
             <h1>{title}</h1>
           </Link>
         </div>
+        <Card className={styles.touxiang}>
+          <Meta
+            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"  />}
+            title="admin"
+            description={<span style={{color:'#00a65a'}}>在线</span>}
+            style={{height:'30px'}}
+          />
+        </Card>
         <Suspense fallback={<PageLoading />}>
           <BaseMenu
             {...this.props}

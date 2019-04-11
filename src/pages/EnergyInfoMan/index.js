@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class UserManagement extends React.Component {
+export default class EnergyInfo extends React.Component {
   componentDidMount() {}
 
   render() {

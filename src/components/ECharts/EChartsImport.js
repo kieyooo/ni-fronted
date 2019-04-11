@@ -1,5 +1,5 @@
 // 统一引入ECharts 图表 和  组件
-
+import echarts from 'echarts/lib/echarts'
 
 // 引入柱状图
 import 'echarts/lib/chart/bar';
@@ -17,4 +17,6 @@ import 'echarts/lib/chart/gauge'
 import 'echarts/lib/component/tooltip';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/legend';
+
+export default echarts;
 

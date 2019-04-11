@@ -20,16 +20,24 @@ class DeviceList extends Component {
     const { dispatch } = this.props;
     dispatch({ type: 'systemsmanagement/getManagedNumber' });
     dispatch({ type: 'systemsbrower/gettableData' });
+    // this.timer = setInterval(() => {
+    //   dispatch({ type: 'systemsmanagement/getManagedNumber' });
+    //   dispatch({ type: 'systemsbrower/gettableData' });
+    // }, 3000);
   }
+
+  // componentWillUnmount() {
+  //   clearInterval(this.timer);
+  // }
 
   runTo = path => {
     router.push(`/device/${path}`);
   };
 
   render() {
-    const Info = ({ title, value, bordered }) => (
+    const Info = ({ title, value, bordered, type, color  }) => (
       <div className={styles.headerInfo}>
-        <span>{title}</span>
+        <span><Icon type={type} style={{marginRight:'8px'}} theme="twoTone" twoToneColor={color} />{title}</span>
         <p>{value}</p>
         {bordered && <em />}
       </div>
@@ -41,13 +49,13 @@ class DeviceList extends Component {
           <Card bordered={false} style={{ marginBottom: '10px' }}>
             <Row>
               <Col sm={8} xs={24}>
-                <Info title="设备总量" value={`${connected + disconnected}台`} bordered />
+                <Info title="设备总量" value={`${connected + disconnected}台`} bordered type="pie-chart" />
               </Col>
               <Col sm={8} xs={24}>
-                <Info title="已连接" value={`${connected}台`} bordered />
+                <Info title="已连接" value={`${connected}台`} bordered type='check-circle' color="#52c41a" />
               </Col>
               <Col sm={8} xs={24}>
-                <Info title="未连接" value={`${disconnected}台`} />
+                <Info title="未连接" value={`${disconnected}台`} type="close-circle" color="#eb2f96" />
               </Col>
             </Row>
           </Card>
@@ -76,14 +84,14 @@ class DeviceList extends Component {
                     <Row>
                       <Col span={24}>
                         <Row>
-                          <Col span={10}>连接状态：</Col>
-                          <Col span={14}>{item.Connection}</Col>
+                          <Col xs={9} sm={12} md={8} lg={8} style={{fontWeight:'bolder'}}>连接状态：</Col>
+                          <Col xs={15} sm={12} md={16} lg={16}>{item.Connection}</Col>
                         </Row>
                       </Col>
                       <Col span={24}>
                         <Row>
-                          <Col span={10}>开始时间：</Col>
-                          <Col span={14}>{item.SystemStartTime}</Col>
+                          <Col xs={9} sm={12} md={8} lg={8} style={{fontWeight:'bolder'}}>开始时间：</Col>
+                          <Col xs={15} sm={12} md={16} lg={16}>{item.SystemStartTime}</Col>
                         </Row>
                       </Col>
                     </Row>

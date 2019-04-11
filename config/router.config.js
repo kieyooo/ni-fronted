@@ -26,27 +26,65 @@ export default [
         component: './SystemBoard/workshop_one',
       },
       {
-        path: '/device/:id',
+        path: '/device/:path',
+        name: 'systemSetting',
+        hideInMenu:true,
+        component: './SystemBoard/workshop_two'
       },
       //生产信息管理
       {
-        path: '/productionInfoMan',
+        path: '/productionInfoManagement',
         name: 'productionInfoMan',
         icon: 'pie-chart',
         routes: [
           {
-            path: '/productionInfoMan/basicProInfo',
+            path: '/productionInfoManagement/basicProInfo',
             name: 'basicProInfo',
             component: './ProductionInfoMan/basicProInfo',
           },
         ],
       },
+      //报警信息管理
+      {
+        path: '/alarmInfomanagement',
+        name: 'alarmInfomanagement',
+        icon: 'warning',
+        component: './AlarmInfoman'
+      },
+      //历史曲线记录
+      {
+        path: '/historicalCurve',
+        name: 'historicalCurve',
+        icon: 'line-chart',
+        component: './HistoricalCurveRecord'
+      },
+      //能耗信息管理
+      {
+        path: '/energyInfoManagement',
+        name: 'energyInfoManagement',
+        icon: 'sync',
+        component: './EnergyInfoMan'
+      },
       //设备信息管理
       {
-        path: '/deviceInfoMan',
-        name: 'deviceInfoMan',
+        path: '/deviceInfoManagement',
+        name: 'deviceInfoManagement',
         icon: 'desktop',
         component: './deviceInfoMan',
+      },
+      //项目信息管理
+      {
+        path: '/projectInfoManagement',
+        name: 'projectInfoManagement',
+        icon: 'table',
+        component: './ProjectInfoMan'
+      },
+      //我的账号
+      {
+        path: '/myAccount',
+        name: 'myaccount',
+        icon: 'user',
+        component: './MyAccount'
       },
       //系统管理员
       {
@@ -61,7 +99,14 @@ export default [
           },
         ],
       },
-
+      //我的消息
+      {
+        path: '/myMessage',
+        name: 'mymessage',
+        icon: 'mail',
+        component: './MyMessage',
+        showMessage: true,
+      },
       {
         component: '404',
       },

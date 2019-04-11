@@ -4,23 +4,25 @@ import { tagData } from '../utils/serializeData'
 export default {
   namespace: 'tag',
   state : {
-    totalCount: 0,
     data: [],
-    tag: {}
+    tag: {},
+    tagIsLBH: []
   },
   effects: {
     *tag(_, { put, call }) {
       const response = yield call(service.tagData);
       if( response.tagsWithValues) {
         const tagdata = tagData(response.tagsWithValues);
-        const totalCount = response.totalCount;
         if ( tagData ) yield put({type:'updateData', payload: {data:tagdata}});
-        yield put({ type:'updateTotalCount', payload: {totalCount}})
       } else if ( tagData ) yield put({type:'updateData', payload: {data:[[]]}});      
     },
     *getTagByPath({ payload }, { put , call }) {
       const res = yield call(service.getTagByPath, payload);
       yield put({ type: 'updateTag', payload: { tag: res }})
+    },
+    *getTagIsLBH(_, { put ,call }){
+      const res = yield call(service.getTagIsLBH);
+      yield put({ type: 'updateTagIsLBH', payload: {data: res}})
     },
     *clearTag(_, { put }){
       yield put({type: 'updateTag', payload: { tag: {} }})
@@ -32,14 +34,14 @@ export default {
         ...state, data: payload.data
       }
     },
-    updateTotalCount(state, { payload }) {
-      return {
-        ...state, totalCount : payload.totalCount
-      }
-    },
     updateTag(state, { payload }) {
       return {
         ...state, tag : payload.tag
+      }
+    },
+    updateTagIsLBH(state, { payload }) {
+      return {
+        ...state, tagIsLBH : payload.data
       }
     }
   }
