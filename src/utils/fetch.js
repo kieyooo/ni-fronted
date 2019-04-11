@@ -1,5 +1,5 @@
 import qs from 'qs';
-import notificate from './notification';
+// import notificate from './notification';
 
 // 强制退出
 function passiveLogout() {
@@ -8,7 +8,7 @@ function passiveLogout() {
   window.g_app._store.dispatch({
     type: 'login/logout',
   });
-  notificate('error', '警告' ,'Cookie失效,请重新登陆')
+  // notificate('error', '警告' ,'Cookie失效,请重新登陆')
 }
 
 /**
