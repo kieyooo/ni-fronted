@@ -41,7 +41,7 @@ export default {
         yield put(routerRedux.replace(redirect || '/'));
       }
       
-      if (response.status === 302) notificate("warning","警告","用户名或密码出错！")
+      if (response.status === 404) notificate("warning","警告","用户名或密码出错！")
     },
     *logout(_, { put }) {
       yield put({
