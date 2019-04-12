@@ -16,7 +16,7 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(service.login, payload);
-      
+      console.log(response.status);
       // Login successfully
       if (response.status === 200) {
         yield put({
@@ -40,6 +40,7 @@ export default {
         }
         yield put(routerRedux.replace(redirect || '/'));
       }
+      
       if (response.status === 302) notificate("warning","警告","用户名或密码出错！")
     },
     *logout(_, { put }) {
