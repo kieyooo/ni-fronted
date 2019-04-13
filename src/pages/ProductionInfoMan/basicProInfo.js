@@ -31,10 +31,13 @@ class BasicProInfo extends React.Component {
     if(newdata[0].length === 0 ) return tagdata[index];
     // if(newdata[0][index].values === tagdata[index].y1 && newdata[1][index].values === tagdata[index].y2) return tagdata[index]
     // const len = tagdata[index] ?  1 : 0;
+    // console.log(newdata[0][index].values)
+    const y1 = newdata[0][index].values === null ? undefined : toFixed(newdata[0][index].values,1);
+    const y2 = newdata[1][index].values === null ? undefined : toFixed(newdata[1][index].values,1);
     const data = {
         x: new Date().getTime(),
-        y1: toFixed(newdata[0][index].values,1),
-        y2: toFixed(newdata[1][index].values,1)
+        y1,
+        y2
     }
     if(Array.isArray(tagdata[index])) {
       tagdata[index].push(data)
@@ -60,20 +63,22 @@ class BasicProInfo extends React.Component {
               return (
                 <Col xs={24} md={12} lg={12} key={index.toString()}>
                   <Card style={{marginBottom:'10px',marginRight:'10px'}} title={`LBH${index}`}>
-                    <Row>
-                      <Col span={12}>
-                        <Row>
-                          <Col xs={6} md={6} xl={4}>电流:</Col>
-                          <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[0][index].values,1)}</Tag></Col>
-                        </Row>
-                      </Col>
-                      <Col span={12}>
-                        <Row>
-                          <Col xs={6} md={6} xl={4}>电压:</Col>
-                          <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[1][index].values,1)}</Tag></Col>
-                        </Row>
-                      </Col>
-                    </Row>
+                    {!tagIsLBH[0][index].values ? 
+                      <Tag color="#f50">设备未连接</Tag> : 
+                      <Row>
+                        <Col span={12}>
+                          <Row>
+                            <Col xs={6} md={6} xl={4}>电流:</Col>
+                            <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[0][index].values,1)}</Tag></Col>
+                          </Row>
+                        </Col>
+                        <Col span={12}>
+                          <Row>
+                            <Col xs={6} md={6} xl={4}>电压:</Col>
+                            <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[1][index].values,1)}</Tag></Col>
+                          </Row>
+                        </Col>
+                      </Row>}
                     <TimelineChart 
                       height={300}
                       data={tagDataAddToChart(tagIsLBH,index)}

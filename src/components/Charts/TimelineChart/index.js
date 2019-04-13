@@ -10,7 +10,7 @@ class TimelineChart extends React.Component {
   render() {
     const {
       title,
-      height = 400,
+      height = 800,
       padding = [60, 25, 40, 40],
       titleMap = {
         y1: 'y1',
@@ -66,7 +66,7 @@ class TimelineChart extends React.Component {
 
     const timeScale = {
       type: 'time',
-      tickInterval: 60 * 60 * 1000,
+      // tickInterval: 60 * 60 * 1000,
       mask: 'HH:mm:ss',
       range: [0, 1],
     };
@@ -84,10 +84,21 @@ class TimelineChart extends React.Component {
         <div>
           {title && <h4>{title}</h4>}
           <Chart height={height} padding={padding} data={dv} scale={cols} forceFit>
+            <Legend />
             <Axis name="x" />
             <Tooltip />
             <Legend name="key" position="top" />
             <Geom type="line" position="x*value" size={borderWidth} color="key" />
+            <Geom 
+              type='point' 
+              position="x*value" 
+              shape="circle"
+              color="key"
+              style={{
+                stroke: "#fff",
+                lineWidth: 1
+              }}
+            />
           </Chart>
           {/* <div style={{ marginRight: -20 }}>
             <SliderGen />
