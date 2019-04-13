@@ -32,6 +32,14 @@ class TimelineChart extends React.Component {
       );
     }
 
+    let min;
+    if (data[0] && data[0].y1 && data[0].y2) {
+      min = Math.min(
+        [...data].sort((a, b) => a.y1 - b.y1)[0].y1,
+        [...data].sort((a, b) => a.y2 - b.y2)[0].y2
+      );
+    }
+
     const ds = new DataSet({
       state: {
         start: data[0].x,
@@ -75,7 +83,7 @@ class TimelineChart extends React.Component {
       x: timeScale,
       value: {
         max,
-        min: 0,
+        min
       },
     };
 
