@@ -10,7 +10,7 @@ class TimelineChart extends React.Component {
   render() {
     const {
       title,
-      height = 400,
+      height = 800,
       padding = [60, 25, 40, 40],
       titleMap = {
         y1: 'y1',
@@ -29,6 +29,14 @@ class TimelineChart extends React.Component {
       max = Math.max(
         [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
         [...data].sort((a, b) => b.y2 - a.y2)[0].y2
+      );
+    }
+
+    let min;
+    if (data[0] && data[0].y1 && data[0].y2) {
+      min = Math.min(
+        [...data].sort((a, b) => a.y1 - b.y1)[0].y1,
+        [...data].sort((a, b) => a.y2 - b.y2)[0].y2
       );
     }
 
@@ -66,7 +74,7 @@ class TimelineChart extends React.Component {
 
     const timeScale = {
       type: 'time',
-      tickInterval: 60 * 60 * 1000,
+      // tickInterval: 60 * 60 * 1000,
       mask: 'HH:mm:ss',
       range: [0, 1],
     };
@@ -75,7 +83,7 @@ class TimelineChart extends React.Component {
       x: timeScale,
       value: {
         max,
-        min: 0,
+        min
       },
     };
 
@@ -84,10 +92,21 @@ class TimelineChart extends React.Component {
         <div>
           {title && <h4>{title}</h4>}
           <Chart height={height} padding={padding} data={dv} scale={cols} forceFit>
+            <Legend />
             <Axis name="x" />
             <Tooltip />
             <Legend name="key" position="top" />
             <Geom type="line" position="x*value" size={borderWidth} color="key" />
+            <Geom 
+              type='point' 
+              position="x*value" 
+              shape="circle"
+              color="key"
+              style={{
+                stroke: "#fff",
+                lineWidth: 1
+              }}
+            />
           </Chart>
           {/* <div style={{ marginRight: -20 }}>
             <SliderGen />

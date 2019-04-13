@@ -57,9 +57,7 @@ class BaseMenu extends PureComponent {
    * get SubMenu or Item
    */
   getSubMenuOrItem = item => {
-    // doc: add hideChildrenInMenu
-    console.warn(item);
-    
+    // doc: add hideChildrenInMenu 
     if (item.children && !item.hideChildrenInMenu && item.children.some(child => child.name)) {
       const { name } = item;
       return (
@@ -121,7 +119,9 @@ class BaseMenu extends PureComponent {
         <span>{name}</span> 
         {item.showMessage && 
           <span>
-            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'8px'}} />
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'32px',backgroundColor: '#87d068'}} />
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'4px',backgroundColor: '#ffc53d'}}  />
+            <Badge count={global.notices.length} style={{boxShadow: "none",marginLeft:'4px'}} />
           </span>  }    
       </Link>
     );

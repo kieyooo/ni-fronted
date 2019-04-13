@@ -4,6 +4,7 @@ import * as service from '@/services/login'
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
+import notificate from '@/utils/notification'
 
 export default {
   namespace: 'login',
@@ -15,12 +16,13 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(service.login, payload);
-      yield put({
-        type: 'changeLoginStatus',
-        payload: { currentAuthority : 'admin' },
-      });
+      console.log(response.status);
       // Login successfully
       if (response.status === 200) {
+        yield put({
+          type: 'changeLoginStatus',
+          payload: { currentAuthority : 'admin' },
+        });
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
         const params = getPageQuery(); 
@@ -38,6 +40,9 @@ export default {
         }
         yield put(routerRedux.replace(redirect || '/'));
       }
+      
+      if (response.status === 404) notificate("warning","警告","用户名或密码出错！");
+      if (response.status >= 500 ) notificate("error",'出错',"网络或服务器出现问题！");
     },
     *logout(_, { put }) {
       yield put({
