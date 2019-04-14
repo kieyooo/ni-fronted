@@ -100,7 +100,7 @@ function connectdStatus(status) {
 
 export function toFixed(string, number) {
   const tryToNumber = Number(string);
-  if (isNaN(tryToNumber)) {
+  if (Number.isNaN(tryToNumber)) {
     return string;
   }
   if (number > 0) return parseFloat(tryToNumber.toFixed(number));
