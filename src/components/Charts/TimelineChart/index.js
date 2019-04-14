@@ -26,6 +26,7 @@ class TimelineChart extends React.Component {
 
     let max;
     let min;
+    console.log(data[0])
     if (data[0] && data[0].y1 && data[0].y2) {
       max = Math.max(
         [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
