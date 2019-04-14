@@ -1,99 +1,108 @@
 import React from 'react';
-import { Card, Row, Col, Tag } from 'antd'
-import { TimelineChart } from '@/components/Charts'
-import { connect } from 'dva'
-import { toFixed } from '@/utils/serializeData'
+import { Card, Row, Col, Tag } from 'antd';
+import { TimelineChart } from '@/components/Charts';
+import { connect } from 'dva';
+import { toFixed } from '@/utils/serializeData';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 
 @connect(({ tag }) => ({
-  tagIsLBH : tag.tagIsLBH
+  tagIsLBH: tag.tagIsLBH,
 }))
 class BasicProInfo extends React.Component {
   state = {
-    tagdata : [
-    ]
-  }
+    tagdata: [],
+  };
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'tag/getTagIsLBH'});
+    dispatch({ type: 'tag/getTagIsLBH' });
     this.timer = setInterval(() => {
-      dispatch({ type: 'tag/getTagIsLBH'});
-    }, 3000);
+      dispatch({ type: 'tag/getTagIsLBH' });
+    }, 10000);
   }
 
   componentWillUnmount() {
-    clearInterval(this.timer)
+    clearInterval(this.timer);
   }
 
-  tagDataAddToChart = (newdata,index) => {
+  tagDataAddToChart = (newdata, index) => {
     const { tagdata } = this.state;
-    if(newdata[0].length === 0 ) return tagdata[index];
+    if (newdata[0].length === 0) return tagdata[index];
     // if(newdata[0][index].values === tagdata[index].y1 && newdata[1][index].values === tagdata[index].y2) return tagdata[index]
     // const len = tagdata[index] ?  1 : 0;
     // console.log(newdata[0][index].values)
-    const y1 = newdata[0][index].values === null ? undefined : toFixed(newdata[0][index].values,1);
-    const y2 = newdata[1][index].values === null ? undefined : toFixed(newdata[1][index].values,1);
+    const y1 = newdata[0][index].values === null ? undefined : toFixed(newdata[0][index].values, 1);
+    const y2 = newdata[1][index].values === null ? undefined : toFixed(newdata[1][index].values, 1);
     const data = {
-        x: new Date().getTime(),
-        y1,
-        y2
-    }
-    if(Array.isArray(tagdata[index])) {
-      tagdata[index].push(data)
+      x: new Date().getTime(),
+      y1,
+      y2,
+    };
+    if (Array.isArray(tagdata[index])) {
+      tagdata[index].push(data);
     } else {
-      tagdata[index] = [data]
+      tagdata[index] = [data];
     }
-    if(tagdata[index].length > 20 ) tagdata[index].shift();
-    return tagdata[index]
-  }
-
-
+    if (tagdata[index].length > 6) tagdata[index].shift();
+    return tagdata[index];
+  };
 
   render() {
     const { tagIsLBH } = this.props;
-    const { tagDataAddToChart } = this
-    
+    const { tagDataAddToChart } = this;
+
     return (
       <PageHeaderWrapper>
-        
         {tagIsLBH[0] ? (
           <Row>
-            {tagIsLBH[0].map((value,index) => {
+            {tagIsLBH[0].map((value, index) => {
               return (
                 <Col xs={24} md={12} lg={12} key={index.toString()}>
-                  <Card style={{marginBottom:'10px',marginRight:'10px'}} title={`LBH${index}`}>
-                    {!tagIsLBH[0][index].values ? 
-                      <Tag color="#f50">设备未连接</Tag> : 
+                  <Card style={{ marginBottom: '10px', marginRight: '10px' }} title={`LBH${index}`}>
+                    {!tagIsLBH[0][index].values && !tagIsLBH[1][index].values ? (
+                      <Tag color="#f50">设备未连接</Tag>
+                    ) : (
                       <Row>
                         <Col span={12}>
                           <Row>
-                            <Col xs={6} md={6} xl={4}>电流:</Col>
-                            <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[0][index].values,1)}</Tag></Col>
+                            <Col xs={6} md={6} xl={4}>
+                              电流:
+                            </Col>
+                            <Col xs={18} md={18} xl={18}>
+                              <Tag style={{ padding: '0 30px' }}>
+                                {toFixed(tagIsLBH[0][index].values, 1)}
+                              </Tag>
+                            </Col>
                           </Row>
                         </Col>
                         <Col span={12}>
                           <Row>
-                            <Col xs={6} md={6} xl={4}>电压:</Col>
-                            <Col xs={18} md={18} xl={18}><Tag style={{padding:'0 30px'}}>{toFixed(tagIsLBH[1][index].values,1)}</Tag></Col>
+                            <Col xs={6} md={6} xl={4}>
+                              电压:
+                            </Col>
+                            <Col xs={18} md={18} xl={18}>
+                              <Tag style={{ padding: '0 30px' }}>
+                                {toFixed(tagIsLBH[1][index].values, 1)}
+                              </Tag>
+                            </Col>
                           </Row>
                         </Col>
-                      </Row>}
-                    <TimelineChart 
+                      </Row>
+                    )}
+                    <TimelineChart
                       height={300}
-                      data={tagDataAddToChart(tagIsLBH,index)}
-                      titleMap={{y1: '电流', y2: '电压'}}
+                      data={tagDataAddToChart(tagIsLBH, index)}
+                      titleMap={{ y1: '电流', y2: '电压' }}
                     />
                   </Card>
-                </Col> 
-              )
-            } )}
+                </Col>
+              );
+            })}
           </Row>
-          
-        ): null}
+        ) : null}
       </PageHeaderWrapper>
     );
   }
 }
 
-export default BasicProInfo
+export default BasicProInfo;
