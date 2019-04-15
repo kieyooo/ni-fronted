@@ -1,5 +1,36 @@
 import { isArray } from 'util';
 
+
+function type(params) {
+  if (params === 'DOUBLE') return 'Double';
+  if (params === 'INT') return '32-bit Integer';
+  return '';
+}
+
+function connectdStatus(status) {
+  switch (status) {
+    case 2:
+      return '已连接';
+    case 0:
+      return '未连接';
+    case 1:
+      return '已连接';
+    case -1:
+      return '未连接';
+    default:
+      return '';
+  }
+}
+
+export function toFixed(string, number) {
+  const tryToNumber = Number(string);
+  if (Number.isNaN(tryToNumber)) {
+    return string;
+  }
+  if (number > 0) return parseFloat(tryToNumber.toFixed(number));
+  return parseFloat(tryToNumber);
+}
+
 export function serializeTableData(data) {
   const newData = [];
   if (!isArray(data)) return [];
@@ -77,32 +108,3 @@ export function tagData(soureData) {
   return data;
 }
 
-function type(params) {
-  if (params === 'DOUBLE') return 'Double';
-  if (params === 'INT') return '32-bit Integer';
-  return '';
-}
-
-function connectdStatus(status) {
-  switch (status) {
-    case 2:
-      return '已连接';
-    case 0:
-      return '未连接';
-    case 1:
-      return '已连接';
-    case -1:
-      return '未连接';
-    default:
-      return '';
-  }
-}
-
-export function toFixed(string, number) {
-  const tryToNumber = Number(string);
-  if (Number.isNaN(tryToNumber)) {
-    return string;
-  }
-  if (number > 0) return parseFloat(tryToNumber.toFixed(number));
-  return parseFloat(tryToNumber);
-}

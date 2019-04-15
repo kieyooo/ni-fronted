@@ -31,8 +31,8 @@ class BasicProInfo extends React.Component {
     // if(newdata[0][index].values === tagdata[index].y1 && newdata[1][index].values === tagdata[index].y2) return tagdata[index]
     // const len = tagdata[index] ?  1 : 0;
     // console.log(newdata[0][index].values)
-    const y1 = newdata[0][index].values === null ? undefined : toFixed(newdata[0][index].values, 1);
-    const y2 = newdata[1][index].values === null ? undefined : toFixed(newdata[1][index].values, 1);
+    const y1 = newdata[0][index].values === null ? null : toFixed(newdata[0][index].values, 1);
+    const y2 = newdata[1][index].values === null ? null : toFixed(newdata[1][index].values, 1);
     const data = {
       x: new Date().getTime(),
       y1,
