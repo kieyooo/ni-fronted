@@ -25,22 +25,23 @@ class TimelineChart extends React.Component {
     data.sort((a, b) => a.x - b.x);
 
     let max;
-    let min;
+    // let min;
     if (data[0]) {
       max = Math.max(
         [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
         [...data].sort((a, b) => b.y2 - a.y2)[0].y2
       );
-      const y1Min = [...data].sort((a, b) => a.y1 - b.y1)[0].y1;
-      const y2Min = [...data].sort((a, b) => a.y2 - b.y2)[0].y2;
-      if (y1Min === null && y2Min !== null) min = Number(y2Min);
-      if (y1Min !== null && y2Min === null) min = Number(y1Min);
-      if (y1Min === null && y2Min === null) min = 0;
-      if (y1Min !== null && y2Min !== null) min = Math.min(y1Min,y2Min);
-      // min = Math.min(
-      //   [...data].sort((a, b) => a.y1 - b.y1)[0].y1,
-      //   [...data].sort((a, b) => a.y2 - b.y2)[0].y2
-      // );
+      // console.log("yimax",)
+      // const y1Min = [...data].sort((a, b) => a.y1 - b.y1)[0].y1;
+      // const y2Min = [...data].sort((a, b) => a.y2 - b.y2)[0].y2;
+      // if (y1Min === null && y2Min !== null) min = Number(y2Min);
+      // if (y1Min !== null && y2Min === null) min = Number(y1Min);
+      // if (y1Min === null && y2Min === null) min = 0;
+      // if (y1Min !== null && y2Min !== null) min = Math.min(y1Min,y2Min);
+      // // min = Math.min(
+      // //   [...data].sort((a, b) => a.y1 - b.y1)[0].y1,
+      // //   [...data].sort((a, b) => a.y2 - b.y2)[0].y2
+      // // );
     }
 
     const ds = new DataSet({
@@ -87,7 +88,7 @@ class TimelineChart extends React.Component {
       x: timeScale,
       value: {
         max,
-        min
+        min: 0
       },
     };
 
