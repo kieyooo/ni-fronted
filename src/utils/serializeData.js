@@ -23,6 +23,7 @@ function connectdStatus(status) {
 }
 
 export function toFixed(string, number) {
+  if (string === null) return "NULL"
   const tryToNumber = Number(string);
   if (Number.isNaN(tryToNumber)) {
     return string;

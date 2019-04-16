@@ -11,6 +11,8 @@ function passiveLogout() {
   notificate('warning', '警告' ,'Cookie失效,请重新登陆')
 }
 
+
+let timer;
 /**
  * @param {boolean} true => response.json() false => response
  * @param {string} method
@@ -19,6 +21,10 @@ function passiveLogout() {
  * @param {any} header {string: value}
  */
 export default async function request(isJSON, method, url, body, header) {
+  clearTimeout(timer);
+  setTimeout(() => {
+    passiveLogout();
+  }, 1000 * 60 * 8);
   const promiseNull = Promise.resolve([]);
   const headers = Object.assign(
     {},
