@@ -12,7 +12,7 @@ function passiveLogout() {
 }
 
 
-let timer;
+// let timer;
 /**
  * @param {boolean} true => response.json() false => response
  * @param {string} method
@@ -21,10 +21,10 @@ let timer;
  * @param {any} header {string: value}
  */
 export default async function request(isJSON, method, url, body, header) {
-  clearTimeout(timer);
-  setTimeout(() => {
-    passiveLogout();
-  }, 1000 * 60 * 8);
+  // clearTimeout(timer);
+  // setTimeout(() => {
+  //   passiveLogout();
+  // }, 1000 * 60 * 8);
   const promiseNull = Promise.resolve([]);
   const headers = Object.assign(
     {},

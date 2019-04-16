@@ -16,7 +16,6 @@ export default {
   effects: {
     *login({ payload }, { call, put }) {
       const response = yield call(service.login, payload);
-      console.log(response.status);
       // Login successfully
       if (response.status === 200) {
         yield put({
@@ -44,7 +43,8 @@ export default {
       if (response.status === 404) notificate("warning","警告","用户名或密码出错！");
       if (response.status >= 500 ) notificate("error",'出错',"网络或服务器出现问题！");
     },
-    *logout(_, { put }) {
+    *logout(_, { put, call }) {
+      yield call(service.logout);
       yield put({
         type: 'changeLoginStatus',
         payload: {
