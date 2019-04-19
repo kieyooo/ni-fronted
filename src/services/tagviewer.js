@@ -11,3 +11,7 @@ export async function getTagByPath({ path }) {
 export async function getTagIsLBH() {
   return request(true, "Get", '/api/tag/lbh-properties');
 }
+
+export async function getTagLBH() {
+  return request(true, "GET", '/api/tag/v1/lbh');
+}

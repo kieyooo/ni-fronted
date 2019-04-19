@@ -6,7 +6,8 @@ export default {
   state : {
     data: [],
     tag: {},
-    tagIsLBH: []
+    tagIsLBH: [],
+    tagArrByLBH: []
   },
   effects: {
     *tag(_, { put, call }) {
@@ -26,6 +27,10 @@ export default {
     },
     *clearTag(_, { put }){
       yield put({type: 'updateTag', payload: { tag: {} }})
+    },
+    *getTagArrByLBH(_, { put, call }){
+      const res = yield call(service.getTagLBH);
+      yield put({type: 'updateTagArrByLBH', payload: {data: res}})
     }
   },
   reducers: {
@@ -42,6 +47,11 @@ export default {
     updateTagIsLBH(state, { payload }) {
       return {
         ...state, tagIsLBH : payload.data
+      }
+    },
+    updateTagArrByLBH(state, { payload }) {
+      return {
+        ...state, tagArrByLBH: payload.data
       }
     }
   }
