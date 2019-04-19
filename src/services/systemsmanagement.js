@@ -1,5 +1,6 @@
 import request from '@/utils/fetch';
 
+// 请求等待中设备的数据
 export async function pendingSystems() {
   return request(true, 'GET', '/api/sysmgmt/systems/keys');
 }
@@ -16,6 +17,7 @@ export async function discoveredSystems() {
   });
 }
 
+// 请求活动工作的数据
 export async function activeJobs() {
   return request(true, 'POST', '/api/sysmgmt/systems/managed/jobs/query', {
     filter: {
@@ -42,6 +44,7 @@ export async function activeJobs() {
   });
 }
 
+// 请求闹钟规则的数据
 export async function alarmRules() {
   return request(true, 'POST', '/api/tagrule/query-rules', {
     skip: 0,
@@ -50,6 +53,7 @@ export async function alarmRules() {
   });
 }
 
+// 请求已管理系统的数据
 export async function managedSystems() {
   return request(true, 'POST', '/api/sysmgmt/systems/managed/query', {
     filter: {},
@@ -60,10 +64,12 @@ export async function managedSystems() {
   });
 }
 
+// 请求标准资产的数据
 export async function calibratedAssets() {
   return request(true, 'GET', '/api/apm/calibratable-asset-summary');
 }
 
+// 请求活动闹钟的数据
 export async function activeAlarms() {
   return request(true, 'POST', '/api/alarm/query-instances', {
     active: true,

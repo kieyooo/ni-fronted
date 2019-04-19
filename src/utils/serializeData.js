@@ -1,5 +1,6 @@
 import { isArray } from 'util';
 
+// 对请求的数据进行初步处理
 
 function type(params) {
   if (params === 'DOUBLE') return 'Double';
@@ -22,6 +23,14 @@ function connectdStatus(status) {
   }
 }
 
+/**
+ * 保留小数位数，字符串直接返回
+ *
+ * @export
+ * @param {*} string 需要处理的数据
+ * @param {*} number  需要保留的位数
+ * @returns
+ */
 export function toFixed(string, number) {
   const tryToNumber = Number(string);
   if (Number.isNaN(tryToNumber)) {
@@ -31,6 +40,11 @@ export function toFixed(string, number) {
   return parseFloat(tryToNumber);
 }
 
+/**
+ *  处理设备信息，初步处理成符合列表形式
+ *
+ * @param {*} data
+ */
 export function serializeTableData(data) {
   const newData = [];
   if (!isArray(data)) return [];
@@ -40,6 +54,7 @@ export function serializeTableData(data) {
     const temp = {
       Name: dataisTure ? ele.grains.data.localhost : ele.id,
       IPAddress: dataisTure ? ele.grains.data.ipv4[0] : '',
+      // eslint-disable-next-line compat/compat
       MACAddress: dataisTure ? Object.values(ele.grains.data.hwaddr_interfaces)[0] : '',
       MinionID: ele.id || '',
       Vendor: dataisTure ? ele.grains.data.manufacturer : '',
@@ -57,6 +72,11 @@ export function serializeTableData(data) {
   return newData;
 }
 
+/**
+ * 处理设备信息， 初步处理成设备详情需要的信息
+ *
+ * @param {*} sourceData
+ */
 export function serializeBrowserData(sourceData) {
   const data = [];
   if (!isArray(sourceData)) return [];
@@ -65,6 +85,7 @@ export function serializeBrowserData(sourceData) {
     const temp = {
       Name: dataisTure ? ele.grains.data.localhost : '',
       IPAddress: dataisTure ? ele.grains.data.ipv4 : [],
+      // eslint-disable-next-line compat/compat
       MACAddress: dataisTure ? Object.values(ele.grains.data.hwaddr_interfaces) : [],
       MinionID: ele.id || '',
       Vendor: dataisTure ? ele.grains.data.manufacturer : '',
@@ -84,6 +105,11 @@ export function serializeBrowserData(sourceData) {
   return data;
 }
 
+/**
+ * 将tag 数据处理成需要的形式
+ *
+ * @param {*} soureData
+ */
 export function tagData(soureData) {
   const data = [];
   if (!isArray(soureData)) return [];
@@ -107,4 +133,3 @@ export function tagData(soureData) {
 
   return data;
 }
-

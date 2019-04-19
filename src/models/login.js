@@ -1,10 +1,10 @@
 import { routerRedux } from 'dva/router';
 import { stringify } from 'qs';
-import * as service from '@/services/login'
+import * as service from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
-import notificate from '@/utils/notification'
+import notificate from '@/utils/notification';
 
 export default {
   namespace: 'login',
@@ -14,17 +14,18 @@ export default {
   },
 
   effects: {
+    // 登陆数据处理
     *login({ payload }, { call, put }) {
       const response = yield call(service.login, payload);
       // Login successfully
       if (response.status === 200) {
         yield put({
           type: 'changeLoginStatus',
-          payload: { currentAuthority : 'admin' },
+          payload: { currentAuthority: 'admin' },
         });
         reloadAuthorized();
         const urlParams = new URL(window.location.href);
-        const params = getPageQuery(); 
+        const params = getPageQuery();
         let { redirect } = params;
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
@@ -39,10 +40,12 @@ export default {
         }
         yield put(routerRedux.replace(redirect || '/'));
       }
-      
-      if (response.status === 404) notificate("warning","警告","用户名或密码出错！");
-      if (response.status >= 500 ) notificate("error",'出错',"网络或服务器出现问题！");
+
+      if (response.status === 404) notificate('warning', '警告', '用户名或密码出错！');
+      if (response.status >= 500) notificate('error', '出错', '网络或服务器出现问题！');
     },
+
+    // 注销处理
     *logout(_, { put }) {
       // yield call(service.logout);
       yield put({

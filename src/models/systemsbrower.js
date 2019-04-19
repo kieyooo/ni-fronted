@@ -4,15 +4,15 @@ import { serializeTableData, serializeBrowserData } from '@/utils/serializeData'
 export default {
   namespace: 'systemsbrower',
   state: {
-    tableData: [],
-    browserData: [],
+    tableData: [], // 列表中的设备信息
+    browserData: [], // 设备详情
   },
 
   effects: {
     *gettableData(_, { put, call }) {
       const response = yield call(discoveredSystems);
       if (response.result) {
-        const data = serializeTableData(response.result);
+        const data = serializeTableData(response.result); // 对信息进行处理
         yield put({ type: 'updateTableData', payload: { data } });
       }
     },
