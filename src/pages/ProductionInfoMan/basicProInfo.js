@@ -107,7 +107,9 @@ class BasicProInfo extends React.Component {
               );
             })}
           </Row>
-        ) : null}
+        ) : (
+          <Card loading />
+        )}
       </PageHeaderWrapper>
     );
   }
