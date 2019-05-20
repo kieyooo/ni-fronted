@@ -19,6 +19,19 @@ class WorkShopTwo extends Component {
         size: 10,
       },
     });
+    this.timer = setInterval(() => {
+      dispatch({
+        type: 'device/getDevicesById',
+        payload: {
+          id: match.params.id,
+          size: 10,
+        },
+      });
+    }, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   getDeviceName = data => {
@@ -41,14 +54,14 @@ class WorkShopTwo extends Component {
   };
 
   render() {
-    const { deviceListById, getDataLoading, match } = this.props;
+    const { deviceListById, match } = this.props;
     const { type } = match.params;
     const deviceName = this.getDeviceName(deviceListById);
     const data = this.TransformDataToChart();
     return (
       <PageHeaderWrapper>
         {deviceListById.length !== 0 && type === 'A' && (
-          <DeviceTypeIsA data={data} deviceName={deviceName} loading={getDataLoading} />
+          <DeviceTypeIsA data={data} deviceName={deviceName} />
         )}
         {deviceListById.length !== 0 && type === 'B' && (
           <Alert type="error" message="施工中" showIcon />

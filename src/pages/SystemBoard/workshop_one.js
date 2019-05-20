@@ -19,10 +19,6 @@ class DeviceList extends Component {
     dispatch({ type: 'device/getDevices' });
   }
 
-  componentWillUnmount() {
-    clearInterval(this.timer);
-  }
-
   runTo = (type, path) => {
     router.push(`/device/${type}/${path}`);
   };
@@ -32,7 +28,7 @@ class DeviceList extends Component {
     const { runTo } = this;
     return (
       <PageHeaderWrapper>
-        <Card style={{ marginBottom: '15px' }}>
+        {/* <Card style={{ marginBottom: '15px' }}>
           <Card.Grid>设备总数</Card.Grid>
           <Card.Grid>在线</Card.Grid>
           <Card.Grid>离线</Card.Grid>
@@ -40,7 +36,7 @@ class DeviceList extends Component {
           <Card.Grid>生产</Card.Grid>
           <Card.Grid>停机</Card.Grid>
           <Card.Grid>保养</Card.Grid>
-        </Card>
+        </Card> */}
         {deviceList.length !== 0 ? (
           <Card title="A类设备" style={{ marginBottom: '15px' }}>
             <List
