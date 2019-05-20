@@ -26,10 +26,10 @@ export default [
         component: './SystemBoard/workshop_one',
       },
       {
-        path: '/device/:path',
+        path: '/device/:type/:id',
         name: 'systemSetting',
-        hideInMenu:true,
-        component: './SystemBoard/workshop_two'
+        hideInMenu: true,
+        component: './SystemBoard/workshop_two',
       },
       //生产信息管理
       {
@@ -49,21 +49,21 @@ export default [
         path: '/alarmInfomanagement',
         name: 'alarmInfomanagement',
         icon: 'warning',
-        component: './AlarmInfoman'
+        component: './AlarmInfoman',
       },
       //历史曲线记录
       {
         path: '/historicalCurve',
         name: 'historicalCurve',
         icon: 'line-chart',
-        component: './HistoricalCurveRecord'
+        component: './HistoricalCurveRecord',
       },
       //能耗信息管理
       {
         path: '/energyInfoManagement',
         name: 'energyInfoManagement',
         icon: 'sync',
-        component: './EnergyInfoMan'
+        component: './EnergyInfoMan',
       },
       //设备信息管理
       {
@@ -77,14 +77,14 @@ export default [
         path: '/projectInfoManagement',
         name: 'projectInfoManagement',
         icon: 'table',
-        component: './ProjectInfoMan'
+        component: './ProjectInfoMan',
       },
       //我的账号
       {
         path: '/myAccount',
         name: 'myaccount',
         icon: 'user',
-        component: './MyAccount'
+        component: './MyAccount',
       },
       //系统管理员
       {

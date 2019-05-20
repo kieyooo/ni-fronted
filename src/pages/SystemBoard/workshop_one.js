@@ -1,108 +1,118 @@
 import React, { Component } from 'react';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-import { Card, Row, Col, List, Icon } from 'antd';
+import { Card, List, Icon } from 'antd';
 import { connect } from 'dva';
 import router from 'umi/router';
-import styles from './workshop_one.less';
 // import Ellipsis from '@/components/Ellipsis'
 
 const { Meta } = Card;
 
-@connect(({ systemsmanagement, systemsbrower }) => ({
-  connected: systemsmanagement.connected,
-  disconnected: systemsmanagement.disconnected,
-  tableData: systemsbrower.tableData,
+@connect(({ device, loading }) => ({
+  deviceList: device.deviceList,
+  getDeviceLoading: loading.effects['device/getDevices'],
 }))
 class DeviceList extends Component {
   state = {};
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'systemsmanagement/getManagedNumber' });
-    dispatch({ type: 'systemsbrower/gettableData' });
-    this.timer = setInterval(() => {
-      dispatch({ type: 'systemsmanagement/getManagedNumber' });
-      dispatch({ type: 'systemsbrower/gettableData' });
-    }, 3000);
+    dispatch({ type: 'device/getDevices' });
   }
 
   componentWillUnmount() {
     clearInterval(this.timer);
   }
 
-  runTo = path => {
-    router.push(`/device/${path}`);
+  runTo = (type, path) => {
+    router.push(`/device/${type}/${path}`);
   };
 
   render() {
-    const Info = ({ title, value, bordered, type, color  }) => (
-      <div className={styles.headerInfo}>
-        <span><Icon type={type} style={{marginRight:'8px'}} theme="twoTone" twoToneColor={color} />{title}</span>
-        <p>{value}</p>
-        {bordered && <em />}
-      </div>
-    );
-    const { connected, disconnected, tableData } = this.props;
+    const { deviceList, getDeviceLoading } = this.props;
+    const { runTo } = this;
     return (
       <PageHeaderWrapper>
-        <div className={styles.standardList}>
-          <Card bordered={false} style={{ marginBottom: '10px' }}>
-            <Row>
-              <Col sm={8} xs={24}>
-                <Info title="设备总量" value={`${connected + disconnected}台`} bordered type="pie-chart" />
-              </Col>
-              <Col sm={8} xs={24}>
-                <Info title="已连接" value={`${connected}台`} bordered type='check-circle' color="#52c41a" />
-              </Col>
-              <Col sm={8} xs={24}>
-                <Info title="未连接" value={`${disconnected}台`} type="close-circle" color="#eb2f96" />
-              </Col>
-            </Row>
+        <Card style={{ marginBottom: '15px' }}>
+          <Card.Grid>设备总数</Card.Grid>
+          <Card.Grid>在线</Card.Grid>
+          <Card.Grid>离线</Card.Grid>
+          <Card.Grid>故障</Card.Grid>
+          <Card.Grid>生产</Card.Grid>
+          <Card.Grid>停机</Card.Grid>
+          <Card.Grid>保养</Card.Grid>
+        </Card>
+        {deviceList.length !== 0 ? (
+          <Card title="A类设备" style={{ marginBottom: '15px' }}>
+            <List
+              rowKey="id"
+              loading={getDeviceLoading}
+              grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+              dataSource={deviceList.filter(
+                ele => ele.type === 'NBIot' && ele.argName !== 'Datatime'
+              )}
+              renderItem={item =>
+                item ? (
+                  <List.Item key={item.id}>
+                    <Card hoverable onClick={() => runTo('A', item.id)}>
+                      <Meta
+                        avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
+                        title={`${item.type};${item.deviceName};${item.argName}`}
+                      />
+                    </Card>
+                  </List.Item>
+                ) : null
+              }
+            />
           </Card>
-        </div>
-        <div className={styles.cardList}>
-          <List
-            // bordered
-            dataSource={tableData}
-            grid={{ gutter: 24, lg: 4, md: 2, sm: 1, xs: 1 }}
-            renderItem={item =>
-              item ? (
-                <List.Item>
-                  <Card
-                    hoverable
-                    onClick={() => this.runTo(item.MinionID)}
-                    style={
-                      item.Connection === '已连接'
-                        ? { backgroundColor: '#b7eb8f' }
-                        : { backgroundColor: '#d9d9d9' }
-                    }
-                  >
-                    <Meta
-                      avatar={<Icon type="cluster" style={{ fontSize: '28px' }} />}
-                      title={item.Name}
-                    />
-                    <Row>
-                      <Col span={24}>
-                        <Row>
-                          <Col xs={9} sm={12} md={8} lg={8} style={{fontWeight:'bolder'}}>连接状态：</Col>
-                          <Col xs={15} sm={12} md={16} lg={16}>{item.Connection}</Col>
-                        </Row>
-                      </Col>
-                      <Col span={24}>
-                        <Row>
-                          <Col xs={9} sm={12} md={8} lg={8} style={{fontWeight:'bolder'}}>开始时间：</Col>
-                          <Col xs={15} sm={12} md={16} lg={16}>{item.SystemStartTime}</Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                  </Card>
-                </List.Item>
-              ) : (
-                <div />
-              )
-            }
-          />
-        </div>
+        ) : (
+          <Card loading />
+        )}
+        {deviceList.length !== 0 ? (
+          <Card title="B类设备" style={{ marginBottom: '15px' }}>
+            <List
+              rowKey="id"
+              loading={getDeviceLoading}
+              grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+              dataSource={deviceList.filter(ele => ele.type === 'ShiYanBan')}
+              renderItem={item =>
+                item ? (
+                  <List.Item key={item.id}>
+                    <Card hoverable onClick={() => runTo('B', item.id)}>
+                      <Meta
+                        avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
+                        title={`${item.type};${item.deviceName};${item.argName}`}
+                      />
+                    </Card>
+                  </List.Item>
+                ) : null
+              }
+            />
+          </Card>
+        ) : null}
+        {deviceList.length !== 0 ? (
+          <Card title="C类设备" style={{ marginBottom: '15px' }}>
+            <List
+              rowKey="id"
+              loading={getDeviceLoading}
+              grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+              dataSource={deviceList.filter(
+                ele => ele.type === 'Wafer_Test' || ele.type === 'RF_Test'
+              )}
+              renderItem={item =>
+                item ? (
+                  <List.Item key={item.id}>
+                    <Card hoverable onClick={() => runTo('C', item.id)}>
+                      <Meta
+                        avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
+                        title={`${item.type};${item.deviceName};${item.argName}`}
+                      />
+                    </Card>
+                  </List.Item>
+                ) : null
+              }
+            />
+          </Card>
+        ) : null}
       </PageHeaderWrapper>
     );
   }

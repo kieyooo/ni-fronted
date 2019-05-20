@@ -74,6 +74,7 @@ export default {
   // https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': primaryColor,
+    'card-actions-background': '#f5f8fa',
   },
   proxy: {
     '/api': {

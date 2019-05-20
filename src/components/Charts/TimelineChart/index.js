@@ -11,7 +11,7 @@ class TimelineChart extends React.Component {
     const {
       title,
       height = 800,
-      padding = [60, 25, 40, 40],
+      padding = [60, 25, 40, 50],
       titleMap = {
         y1: 'y1',
         y2: 'y2',
@@ -34,7 +34,7 @@ class TimelineChart extends React.Component {
       min = Math.min(
         [...data].sort((a, b) => a.y1 - b.y1)[0].y1,
         [...data].sort((a, b) => a.y2 - b.y2)[0].y2
-      )
+      );
     }
 
     const ds = new DataSet({
@@ -75,12 +75,11 @@ class TimelineChart extends React.Component {
       range: [0, 1],
     };
 
-
     const cols = {
       x: timeScale,
       value: {
         max,
-        min
+        min,
       },
     };
 
@@ -114,14 +113,14 @@ class TimelineChart extends React.Component {
             <Tooltip />
             <Legend name="key" position="top" />
             <Geom type="line" position="x*value" size={borderWidth} color="key" />
-            <Geom 
-              type='point' 
-              position="x*value" 
+            <Geom
+              type="point"
+              position="x*value"
               shape="circle"
               color="key"
               style={{
-                stroke: "#fff",
-                lineWidth: 1
+                stroke: '#fff',
+                lineWidth: 1,
               }}
               // animate={
               //   {appear: {

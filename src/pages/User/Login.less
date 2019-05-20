@@ -1,8 +1,11 @@
 @import '~antd/lib/style/themes/default.less';
 
 .main {
-  width: 388px;
+  width: 368px;
   margin: 0 auto;
+  padding: 10px 20px 20px 20px;
+  border-radius: 20px;
+
   @media screen and (max-width: @screen-sm) {
     width: 95%;
   }
@@ -19,14 +22,17 @@
       color: @primary-color;
     }
   }
+}
 
-  .other {
-    margin-top: 24px;
-    line-height: 22px;
-    text-align: left;
+.loginLinks {
+  display: flex;
+  justify-content: space-between;
 
-    .register {
-      float: right;
+  .link {
+    color: #03d275;
+    &:hover {
+      color: #40a9ff;
+      text-shadow: 0 0 10px #188fff3f;
     }
   }
 }

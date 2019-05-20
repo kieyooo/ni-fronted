@@ -1,8 +1,7 @@
 import { routerRedux } from 'dva/router';
-import * as service from '@/services/login';
+import login from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
-import notificate from '@/utils/notification';
 
 function isLoginOrException(pathname) {
   if (pathname === '/') return true;
@@ -30,9 +29,9 @@ export default {
   effects: {
     // 登陆数据处理
     *login({ payload }, { call, put }) {
-      const response = yield call(service.login, payload);
+      const response = yield call(login, payload);
       // Login successfully
-      if (response.status === 200) {
+      if (response && response.status === 200) {
         yield put({
           type: 'changeLoginStatus',
           payload: { currentAuthority: 'admin' },
@@ -42,9 +41,6 @@ export default {
         const lastPage = getLastPage();
         yield put(routerRedux.replace(lastPage || '/'));
       }
-
-      if (response.status === 404) notificate('warning', '警告', '用户名或密码出错！');
-      if (response.status >= 500) notificate('error', '出错', '网络或服务器出现问题！');
     },
 
     // 注销处理
