@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Alert } from 'antd';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DeviceTypeIsA from './A';
@@ -63,12 +62,8 @@ class WorkShopTwo extends Component {
         {deviceListById.length !== 0 && type === 'A' && (
           <DeviceTypeIsA data={data} deviceName={deviceName} />
         )}
-        {deviceListById.length !== 0 && type === 'B' && (
-          <Alert type="error" message="施工中" showIcon />
-        )}
-        {deviceListById.length !== 0 && type === 'C' && (
-          <Alert type="error" message="施工中" showIcon />
-        )}
+        {deviceListById.length !== 0 && type === 'B' && null}
+        {deviceListById.length !== 0 && type === 'C' && null}
       </PageHeaderWrapper>
     );
   }
