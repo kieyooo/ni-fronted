@@ -1,10 +1,23 @@
 import { routerRedux } from 'dva/router';
-import { stringify } from 'qs';
-import * as service from '@/services/login'
+import login from '@/services/login';
 import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
 import { reloadAuthorized } from '@/utils/Authorized';
-import notificate from '@/utils/notification'
+
+function isLoginOrException(pathname) {
+  if (pathname === '/') return true;
+  if (pathname === '/user') return true;
+  if (pathname.startsWith('/user')) return true;
+  return false;
+}
+
+function getLastPage() {
+  const lastPage = window.localStorage.getItem('LAST_PAGE');
+  if (lastPage && !isLoginOrException(lastPage)) {
+    window.localStorage.removeItem('LAST_PAGE');
+    return lastPage;
+  }
+  return null;
+}
 
 export default {
   namespace: 'login',
@@ -14,37 +27,25 @@ export default {
   },
 
   effects: {
+    // 登陆数据处理
     *login({ payload }, { call, put }) {
-      const response = yield call(service.login, payload);
-      console.log(response.status);
+      const response = yield call(login, payload);
       // Login successfully
-      if (response.status === 200) {
+      if (response && response.status === 200) {
         yield put({
           type: 'changeLoginStatus',
-          payload: { currentAuthority : 'admin' },
+          payload: { currentAuthority: 'admin' },
         });
         reloadAuthorized();
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery(); 
-        let { redirect } = params;
-        if (redirect) {
-          const redirectUrlParams = new URL(redirect);
-          if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
-            if (redirect.match(/^\/.*#/)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
-            }
-          } else {
-            redirect = null;
-          }
-        }
-        yield put(routerRedux.replace(redirect || '/'));
+
+        const lastPage = getLastPage();
+        yield put(routerRedux.replace(lastPage || '/'));
       }
-      
-      if (response.status === 404) notificate("warning","警告","用户名或密码出错！");
-      if (response.status >= 500 ) notificate("error",'出错',"网络或服务器出现问题！");
     },
+
+    // 注销处理
     *logout(_, { put }) {
+      // yield call(service.logout);
       yield put({
         type: 'changeLoginStatus',
         payload: {
@@ -55,14 +56,7 @@ export default {
       reloadAuthorized();
       // redirect
       if (window.location.pathname !== '/user/login') {
-        yield put(
-          routerRedux.replace({
-            pathname: '/user/login',
-            search: stringify({
-              redirect: window.location.href,
-            }),
-          })
-        );
+        yield put(routerRedux.replace('/user/login'));
       }
     },
   },
@@ -75,6 +69,15 @@ export default {
         status: payload.status,
         type: payload.type,
       };
+    },
+  },
+
+  subscriptions: {
+    setup({ history }) {
+      history.listen(({ pathname }) => {
+        if (isLoginOrException(pathname)) return;
+        window.localStorage.setItem('LAST_PAGE', pathname);
+      });
     },
   },
 };

@@ -1,16 +1,13 @@
-import request from '@/utils/fetch'
+import request from '@/utils/requestWithCookie';
 
-
-export async function login(query) {
-  return request(false, 'POST', '/api/login/login.do', query, {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  });
-}
-
-export async function ping() {
-  return request(false, "GET", '/api/sysmgmt/ping')
-}
-
-export async function logout() {
-  return request(false, "GET", '/api/login/logout');
+// 登陆
+export default async function login(query) {
+  return request(
+    'POST /api/api/user/login',
+    {
+      body: query,
+      asJSON: false,
+    },
+    false
+  );
 }

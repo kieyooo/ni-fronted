@@ -11,7 +11,7 @@ class TimelineChart extends React.Component {
     const {
       title,
       height = 800,
-      padding = [60, 25, 40, 40],
+      padding = [60, 25, 40, 50],
       titleMap = {
         y1: 'y1',
         y2: 'y2',
@@ -25,15 +25,12 @@ class TimelineChart extends React.Component {
     data.sort((a, b) => a.x - b.x);
 
     let max;
+    let min;
     if (data[0] && data[0].y1 && data[0].y2) {
       max = Math.max(
         [...data].sort((a, b) => b.y1 - a.y1)[0].y1,
         [...data].sort((a, b) => b.y2 - a.y2)[0].y2
       );
-    }
-
-    let min;
-    if (data[0] && data[0].y1 && data[0].y2) {
       min = Math.min(
         [...data].sort((a, b) => a.y1 - b.y1)[0].y1,
         [...data].sort((a, b) => a.y2 - b.y2)[0].y2
@@ -74,7 +71,6 @@ class TimelineChart extends React.Component {
 
     const timeScale = {
       type: 'time',
-      // tickInterval: 60 * 60 * 1000,
       mask: 'HH:mm:ss',
       range: [0, 1],
     };
@@ -83,9 +79,29 @@ class TimelineChart extends React.Component {
       x: timeScale,
       value: {
         max,
-        min
+        min,
       },
     };
+
+    // 缩放的时间轴
+    // const SliderGen = () => (
+    //   <Slider
+    //     padding={[0, padding[1] + 40, 0, padding[3] + 15]}
+    //     width="auto"
+    //     height={26}
+    //     xAxis="x"
+    //     yAxis="y1"
+    //     scales={{ x: timeScale }}
+    //     data={data}
+    //     start={ds.state.start}
+    //     end={ds.state.end}
+    //     backgroundChart={{ type: 'line' }}
+    //     onChange={({ startValue, endValue }) => {
+    //       ds.setState('start', startValue);
+    //       ds.setState('end', endValue);
+    //     }}
+    //   />
+    // );
 
     return (
       <div className={styles.timelineChart} style={{ height }}>
@@ -97,15 +113,23 @@ class TimelineChart extends React.Component {
             <Tooltip />
             <Legend name="key" position="top" />
             <Geom type="line" position="x*value" size={borderWidth} color="key" />
-            <Geom 
-              type='point' 
-              position="x*value" 
+            <Geom
+              type="point"
+              position="x*value"
               shape="circle"
               color="key"
               style={{
-                stroke: "#fff",
-                lineWidth: 1
+                stroke: '#fff',
+                lineWidth: 1,
               }}
+              // animate={
+              //   {appear: {
+              //     animation: 'zoomIn', // 动画名称
+              //     // easing: 'easeInQuart', // 动画缓动效果
+              //     delay: 100, // 动画延迟执行时间
+              //     duration: 600 // 动画执行时间
+              //   }}
+              // }
             />
           </Chart>
           {/* <div style={{ marginRight: -20 }}>
