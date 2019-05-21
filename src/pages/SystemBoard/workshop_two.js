@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
-// import DeviceTypeIsA from './A';
+import DeviceTypeIsA from './A';
 
 @connect(({ device, loading }) => ({
   devicesCollection: device.devicesCollection,
@@ -15,10 +15,6 @@ class WorkShopTwo extends Component {
     dispatch({ type: 'device/deleteList' });
     dispatch({ type: 'device/getDevicesCollection' });
     this.getData();
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
   }
 
   getData = () => {
@@ -38,41 +34,56 @@ class WorkShopTwo extends Component {
     });
   };
 
-  getDeviceName = data => {
-    if (!data) return;
-    if (data.length === 0) return '';
-    return data[0].path.split('.')[1];
+  getDeviceName = path => {
+    return path.split('.')[1];
   };
 
   // 将数据转换成折线图数据格式
   TransformDataToChart = () => {
-    const newData = [];
-    const { deviceListById } = this.props;
-    if (!deviceListById) return;
-    if (deviceListById.length === 0) return [];
+    const newData = [[], [], []];
+    const deviceNameArr = [];
+    const { deviceListByDeviceName } = this.props;
+    if (!deviceListByDeviceName) return;
+    if (deviceListByDeviceName.length === 0) return [];
 
-    deviceListById.forEach(value => {
-      newData.push({
-        x: new Date(value.timestamp.timestamp).getTime(), // 图表时间戳
-        y1: Number(value.value).toFixed(4), // 数据源
-      });
+    deviceListByDeviceName.forEach(value => {
+      if (value.path === 'ZhongShan;NBIot;NBIot_meter.Power waste ') {
+        deviceNameArr[0] = this.getDeviceName(value.path);
+        newData[0].push({
+          x: new Date(value.timestamp.timestamp).getTime(), // 图表时间戳
+          y1: Number(value.value).toFixed(4), // 数据源
+        });
+      }
+      if (value.path === 'ZhongShan;NBIot;NBIot_meter.Voltage') {
+        deviceNameArr[1] = this.getDeviceName(value.path);
+        newData[1].push({
+          x: new Date(value.timestamp.timestamp).getTime(), // 图表时间戳
+          y1: Number(value.value).toFixed(4), // 数据源
+        });
+      }
+      if (value.path === 'ZhongShan;NBIot;NBIot_meter.Current') {
+        deviceNameArr[2] = this.getDeviceName(value.path);
+        newData[2].push({
+          x: new Date(value.timestamp.timestamp).getTime(), // 图表时间戳
+          y1: Number(value.value).toFixed(4), // 数据源
+        });
+      }
     });
-    return newData;
+    return {
+      newData,
+      deviceNameArr,
+    };
   };
 
   render() {
-    // const { match, deviceListByDeviceName } = this.props;
-    // // console.log(deviceListByDeviceName);
-    // const { type } = match.params;
-    // const deviceName = this.getDeviceName(deviceListById);
-    // const data = this.TransformDataToChart();
+    const { match, deviceListByDeviceName } = this.props;
+    const { type } = match.params;
+    const { newData, deviceNameArr } = this.TransformDataToChart();
     return (
       <PageHeaderWrapper>
-        {/* {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && null
-        // <DeviceTypeIsA data={data} deviceName={deviceName} />
-        } */}
-        {/* {deviceListById && deviceListById.length !== 0 && type === 'B' && null}
-         {deviceListById && deviceListById.length !== 0 && type === 'C' && null} } */}
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && (
+          <DeviceTypeIsA data={newData} deviceName={deviceNameArr} />
+        )}
       </PageHeaderWrapper>
     );
   }
