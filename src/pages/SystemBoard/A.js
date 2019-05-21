@@ -2,11 +2,25 @@ import React from 'react';
 import { Card } from 'antd';
 import { Gauge, TimelineChart } from '@/components/Charts';
 
+function getTitle(name) {
+  switch (name) {
+    case 'Power waste ':
+      return 'KW';
+    case 'Voltage':
+      return 'V';
+    case 'Current':
+      return 'A';
+    default:
+      return '';
+  }
+}
+
 const DeviceTypeIsA = ({ data, deviceName, loading }) => {
+  const name = getTitle(deviceName);
   return (
     <div>
       <Card style={{ marginBottom: '10px' }} loading={loading}>
-        <Gauge title={deviceName} height={164} percent={data[0] && data[0].y1} />
+        <Gauge title={name} height={164} percent={data[0] && data[0].y1} />
       </Card>
       {loading ? (
         <Card loading />

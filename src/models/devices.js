@@ -5,7 +5,9 @@ export default {
 
   state: {
     deviceList: [],
+    deviceListByDeviceName: [],
     deviceListById: [],
+    devicesCollection: {},
   },
 
   effects: {
@@ -22,6 +24,20 @@ export default {
         type: 'updateDeviceListById',
         payload: res,
       });
+      yield put({
+        type: 'updateDeviceListByDeviceName',
+        payload: res,
+      });
+    },
+    *getDevicesCollection(_, { put, call }) {
+      const res = yield call(services.getDevicesCollection);
+      yield put({
+        type: 'updaeDevicesCollection',
+        payload: res,
+      });
+    },
+    *deleteList(_, { put }) {
+      yield put({ type: 'deleteDeviceListByDeviceName', payload: [] });
     },
   },
 
@@ -36,6 +52,25 @@ export default {
       return {
         ...state,
         deviceListById: payload,
+      };
+    },
+    updaeDevicesCollection(state, { payload }) {
+      return {
+        ...state,
+        devicesCollection: payload,
+      };
+    },
+    updateDeviceListByDeviceName(state, { payload }) {
+      const deviceListByDeviceName = state.deviceListByDeviceName.concat(payload);
+      return {
+        ...state,
+        deviceListByDeviceName,
+      };
+    },
+    deleteDeviceListByDeviceName(state, { payload }) {
+      return {
+        ...state,
+        deviceListByDeviceName: payload,
       };
     },
   },
