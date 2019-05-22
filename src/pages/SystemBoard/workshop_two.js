@@ -57,6 +57,7 @@ class WorkShopTwo extends Component {
     if (deviceListByDeviceName.length === 0) return [];
 
     deviceListByDeviceName.forEach(value => {
+      if (!value || !value.timestamp) return;
       const temp = {
         x: new Date(value.timestamp.timestamp).getTime(), // 图表时间戳
         y1: Number(Number(value.value).toFixed(2)), // 数据源
@@ -101,6 +102,8 @@ class WorkShopTwo extends Component {
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && (
           <DeviceTypeIsA data={newData} deviceName={deviceNameArr} />
         )}
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'B' && null}
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'C' && null}
         {deviceListByDeviceName && deviceListByDeviceName.length === 0 && <Card loading />}
       </PageHeaderWrapper>
     );

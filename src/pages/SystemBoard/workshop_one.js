@@ -73,7 +73,7 @@ class DeviceList extends Component {
               renderItem={item =>
                 item ? (
                   <List.Item key={item}>
-                    <Card hoverable onClick={() => runTo('A', item)}>
+                    <Card hoverable onClick={() => runTo('B', item)}>
                       <Meta
                         avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
                         title={item}
@@ -99,7 +99,7 @@ class DeviceList extends Component {
               renderItem={item =>
                 item ? (
                   <List.Item key={item}>
-                    <Card hoverable onClick={() => runTo('A', item)}>
+                    <Card hoverable onClick={() => runTo('C', item)}>
                       <Meta
                         avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
                         title={item}
