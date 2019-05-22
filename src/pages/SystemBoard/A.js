@@ -21,7 +21,7 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
       <Card style={{ marginBottom: '10px' }} loading={loading} title="仪表盘">
         <Row gutter={8}>
           {data.map((val, index) => {
-            return (
+            return data[index] && data[index][0] && data[index][0].y1 ? (
               <Col key={index.toString()} md={8} xs={24}>
                 <Card title={deviceName[index]}>
                   <Gauge
@@ -31,7 +31,7 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                   />
                 </Card>
               </Col>
-            );
+            ) : null;
           })}
         </Row>
       </Card>

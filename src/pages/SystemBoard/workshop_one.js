@@ -38,7 +38,7 @@ class DeviceList extends Component {
           <Card.Grid>保养</Card.Grid>
         </Card> */}
         {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
-          <Card title="A类设备" style={{ marginBottom: '15px' }}>
+          <Card title="智能电表" style={{ marginBottom: '15px' }}>
             <List
               rowKey="id"
               loading={getDeviceLoading}
@@ -62,7 +62,7 @@ class DeviceList extends Component {
           <Card loading />
         )}
         {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
-          <Card title="B类设备" style={{ marginBottom: '15px' }}>
+          <Card title="实验云设备" style={{ marginBottom: '15px' }}>
             <List
               rowKey="id"
               loading={getDeviceLoading}
@@ -88,7 +88,7 @@ class DeviceList extends Component {
           <Card loading />
         )}
         {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
-          <Card title="C类设备" style={{ marginBottom: '15px' }}>
+          <Card title="射频测试设备" style={{ marginBottom: '15px' }}>
             <List
               rowKey="id"
               loading={getDeviceLoading}
