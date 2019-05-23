@@ -20,19 +20,21 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
     <div>
       <Card style={{ marginBottom: '10px' }} loading={loading} title="仪表盘">
         <Row gutter={8}>
-          {data.map((val, index) => {
-            return data[index] && data[index][0] && data[index][0].y1 ? (
-              <Col key={index.toString()} md={8} xs={24}>
-                <Card title={deviceName[index]}>
-                  <Gauge
-                    title={getTitle(deviceName[index])}
-                    height={164}
-                    percent={data[index] && data[index][0] && data[index][0].y1}
-                  />
-                </Card>
-              </Col>
-            ) : null;
-          })}
+          {data[0].length !== 0
+            ? data.map((val, index) => {
+                return (
+                  <Col key={index.toString()} md={8} xs={24}>
+                    <Card title={deviceName[index]}>
+                      <Gauge
+                        title={getTitle(deviceName[index])}
+                        height={164}
+                        percent={data[index] && data[index][0] && data[index][0].y1}
+                      />
+                    </Card>
+                  </Col>
+                );
+              })
+            : null}
         </Row>
       </Card>
       {loading ? (
