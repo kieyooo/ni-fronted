@@ -4,6 +4,8 @@ import { connect } from 'dva';
 import { Card } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DeviceTypeIsA from './A';
+// import DeviceTypeIsB from './B'
+import { transformDataToEchartsB, transformDataToEchartsA } from './dataTool';
 
 @connect(({ device, loading }) => ({
   devicesCollection: device.devicesCollection,
@@ -18,7 +20,7 @@ class WorkShopTwo extends Component {
     this.getData();
     this.timer = setInterval(() => {
       this.getData();
-    }, 5000);
+    }, 3000);
   }
 
   componentWillUnmount() {
@@ -32,7 +34,7 @@ class WorkShopTwo extends Component {
     if (!devicesCollection || Object.keys(devicesCollection).length === 0) return [];
     const deviceList = devicesCollection[match.params.deviceName];
     deviceList.forEach(val => {
-      if (val.argName !== 'Datatime') {
+      if (val.argName !== 'Datatime' && val.argName !== 'Status') {
         dispatch({
           type: 'device/getDevicesById',
           payload: {
@@ -49,60 +51,32 @@ class WorkShopTwo extends Component {
   };
 
   // 将数据转换成折线图数据格式
-  TransformDataToChart = () => {
-    const newData = [[], [], []];
-    const deviceNameArr = [];
+  TransformDataToChart = type => {
     const { deviceListByDeviceName } = this.props;
-    if (!deviceListByDeviceName) return;
-    if (deviceListByDeviceName.length === 0) return [];
-
-    deviceListByDeviceName.forEach(value => {
-      if (!value || !value.timestamp) return;
-      const temp = {
-        x: new Date(value.timestamp.timestamp).getTime(), // 图表时间戳
-        y1: Number(Number(value.value).toFixed(2)), // 数据源
-      };
-      if (value.path.includes('Power waste ')) {
-        deviceNameArr[0] = this.getDeviceName(value.path);
-        if (newData[0].length === 0) newData[0].unshift(temp);
-        if (new Date(value.timestamp.timestamp).getTime() !== newData[0][0].x) {
-          newData[0].unshift(temp);
-        }
-        if (newData[0].length > 15) newData[0].pop();
-      }
-      if (value.path.includes('Voltage')) {
-        deviceNameArr[1] = this.getDeviceName(value.path);
-        if (newData[1].length === 0) newData[1].unshift(temp);
-        if (new Date(value.timestamp.timestamp).getTime() !== newData[1][0].x) {
-          newData[1].unshift(temp);
-        }
-        if (newData[1].length > 15) newData[1].pop();
-      }
-      if (value.path.includes('Current')) {
-        deviceNameArr[2] = this.getDeviceName(value.path);
-        if (newData[2].length === 0) newData[2].unshift(temp);
-        if (new Date(value.timestamp.timestamp).getTime() !== newData[2][0].x) {
-          newData[2].unshift(temp);
-        }
-        if (newData[2].length > 15) newData[2].pop();
-      }
-    });
-    return {
-      newData,
-      deviceNameArr,
-    };
+    switch (type) {
+      case 'A':
+        return transformDataToEchartsA(deviceListByDeviceName);
+      case 'B':
+        return transformDataToEchartsB(deviceListByDeviceName);
+      default:
+        return [];
+    }
   };
 
   render() {
     const { match, deviceListByDeviceName } = this.props;
     const { type } = match.params;
-    const { newData, deviceNameArr } = this.TransformDataToChart();
+    const { newData, deviceName } = this.TransformDataToChart(type);
     return (
       <PageHeaderWrapper>
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && (
-          <DeviceTypeIsA data={newData} deviceName={deviceNameArr} />
+          <DeviceTypeIsA data={newData} deviceName={deviceName} />
         )}
-        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'B' && null}
+        {deviceListByDeviceName &&
+          deviceListByDeviceName.length !== 0 &&
+          type === 'B' &&
+          // <DeviceTypeIsB data={newData} deviceName={deviceName} />
+          null}
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'C' && null}
         {deviceListByDeviceName && deviceListByDeviceName.length === 0 && <Card loading />}
       </PageHeaderWrapper>

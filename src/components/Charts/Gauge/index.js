@@ -42,6 +42,12 @@ function getMax(name) {
       return 100;
     case 'V':
       return 450;
+    case 'W':
+      return 1000;
+    case 'mA':
+      return 1000;
+    case 'A':
+      return 50;
     default:
       return 100;
   }
@@ -93,7 +99,7 @@ class Gauge extends React.Component {
           <Arc
             zIndex={0}
             start={[0, 0.965]}
-            end={[500, 0.965]}
+            end={[max || 500, 0.965]}
             style={{
               stroke: bgColor,
               lineWidth: 10,

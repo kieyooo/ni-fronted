@@ -28,15 +28,6 @@ class DeviceList extends Component {
     const { runTo } = this;
     return (
       <PageHeaderWrapper>
-        {/* <Card style={{ marginBottom: '15px' }}>
-          <Card.Grid>设备总数</Card.Grid>
-          <Card.Grid>在线</Card.Grid>
-          <Card.Grid>离线</Card.Grid>
-          <Card.Grid>故障</Card.Grid>
-          <Card.Grid>生产</Card.Grid>
-          <Card.Grid>停机</Card.Grid>
-          <Card.Grid>保养</Card.Grid>
-        </Card> */}
         {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
           <Card title="智能电表" style={{ marginBottom: '15px' }}>
             <List
