@@ -127,8 +127,11 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                           show: false,
                         },
                         min(value) {
-                          return value.min * 0.8;
+                          return value.min * 0.6;
                         },
+                        // max(value) {
+                        //   return value.max
+                        // }
                       },
                       series: [
                         {

@@ -22,7 +22,7 @@ export function transformDataToEchartsA(data) {
       name: new Date(value.timestamp.timestamp).getTime(),
       value: [
         new Date(value.timestamp.timestamp).getTime(),
-        Number(Number(value.value).toFixed(3)),
+        Number(Number(value.value).toFixed(2)),
       ],
     };
     if (value.path.includes('Power waste')) {
