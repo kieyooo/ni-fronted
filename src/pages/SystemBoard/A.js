@@ -10,6 +10,7 @@ function getTitle(name, data, index) {
       name: 'V',
       value: value.toFixed(2),
       max: 450,
+      title: 'Voltage (V)',
     };
   }
   if (name.includes('Power waste')) {
@@ -17,6 +18,7 @@ function getTitle(name, data, index) {
       name: value < 1 ? 'W' : 'KW',
       value: value < 1 ? (value * 1000).toFixed(2) : value.toFixed(2),
       max: value < 1 ? 1000 : 100,
+      title: 'Power waste (KW)',
     };
   }
   if (name.includes('Current')) {
@@ -24,6 +26,7 @@ function getTitle(name, data, index) {
       name: value < 1 ? 'mA' : 'A',
       value: value < 1 ? (value * 1000).toFixed(2) : value.toFixed(2),
       max: value < 1 ? 1000 : 50,
+      title: 'Current (A)',
     };
   }
   return {
@@ -106,7 +109,7 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                     key={index.toString()}
                     option={{
                       title: {
-                        text: deviceName[index],
+                        text: getTitle(deviceName[index], data, index).title,
                       },
                       xAxis: {
                         type: 'time',
@@ -124,7 +127,7 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                           show: false,
                         },
                         min(value) {
-                          return value.min;
+                          return value.min * 0.8;
                         },
                       },
                       series: [
