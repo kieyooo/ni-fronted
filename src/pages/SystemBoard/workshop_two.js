@@ -4,8 +4,14 @@ import { connect } from 'dva';
 import { Card } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DeviceTypeIsA from './A';
-// import DeviceTypeIsB from './B'
-import { transformDataToEchartsB, transformDataToEchartsA } from './dataTool';
+import DeviceTypeIsB from './B';
+import DeviceTypeIsC from './C';
+import {
+  transformDataToEchartsB,
+  transformDataToEchartsA,
+  clearDataList,
+  transformDataToEchartsC,
+} from './dataTool';
 
 @connect(({ device, loading }) => ({
   devicesCollection: device.devicesCollection,
@@ -26,6 +32,7 @@ class WorkShopTwo extends Component {
   componentWillUnmount() {
     const { dispatch } = this.props;
     clearInterval(this.timer);
+    clearDataList();
     dispatch({ type: 'device/deleteList' });
   }
 
@@ -58,6 +65,8 @@ class WorkShopTwo extends Component {
         return transformDataToEchartsA(deviceListByDeviceName);
       case 'B':
         return transformDataToEchartsB(deviceListByDeviceName);
+      case 'C':
+        return transformDataToEchartsC(deviceListByDeviceName);
       default:
         return [];
     }
@@ -66,18 +75,18 @@ class WorkShopTwo extends Component {
   render() {
     const { match, deviceListByDeviceName } = this.props;
     const { type } = match.params;
-    const { newData, deviceName } = this.TransformDataToChart(type);
+    const { DEVICE_A, DEVICE_B, DEVICE_C } = this.TransformDataToChart(type);
     return (
       <PageHeaderWrapper>
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && (
-          <DeviceTypeIsA data={newData} deviceName={deviceName} />
+          <DeviceTypeIsA data={DEVICE_A} />
         )}
-        {deviceListByDeviceName &&
-          deviceListByDeviceName.length !== 0 &&
-          type === 'B' &&
-          // <DeviceTypeIsB data={newData} deviceName={deviceName} />
-          null}
-        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'C' && null}
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'B' && (
+          <DeviceTypeIsB data={DEVICE_B} />
+        )}
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'C' && (
+          <DeviceTypeIsC data={DEVICE_C} />
+        )}
         {deviceListByDeviceName && deviceListByDeviceName.length === 0 && <Card loading />}
       </PageHeaderWrapper>
     );

@@ -3,20 +3,22 @@ import { Card } from 'antd';
 import echarts from '@/common/importEchart';
 import ReactEcharts from 'echarts-for-react';
 
-const DeviceTypeIsB = ({ data, deviceName }) => {
+const DeviceTypeIsB = ({ data }) => {
+  const deviceNameArr = Object.keys(data);
   return (
     <Fragment>
-      {data && data[0].length !== 0 ? (
-        data.map((val, index) => {
-          return (
-            <Card key={index.toString()} style={{ marginBottom: '15px' }}>
+      <Card style={{ marginBottom: '15px' }}>
+        {deviceNameArr.map((val, index) => {
+          return data[val].show && data[val].Line && data[val].data.length !== 0 ? (
+            <Card style={{ marginBottom: '10px' }}>
               <ReactEcharts
+                echarts={echarts}
                 notMerge
                 lazyUpdate
-                echarts={echarts}
+                key={index.toString()}
                 option={{
                   title: {
-                    text: deviceName[index],
+                    text: data[val].name,
                   },
                   xAxis: {
                     type: 'time',
@@ -33,23 +35,29 @@ const DeviceTypeIsB = ({ data, deviceName }) => {
                     splitLine: {
                       show: false,
                     },
+                    min(value) {
+                      return value.min;
+                    },
+                    // max(value) {
+                    //   return value.max
+                    // }
                   },
                   series: [
                     {
-                      name: deviceName[index],
+                      name: data[val].name,
                       type: 'line',
                       smooth: true,
-                      data: data[index],
+                      data: data[val].data,
                     },
                   ],
                 }}
               />
             </Card>
+          ) : (
+            data[val].show && <Card loading />
           );
-        })
-      ) : (
-        <Card loading />
-      )}
+        })}
+      </Card>
     </Fragment>
   );
 };

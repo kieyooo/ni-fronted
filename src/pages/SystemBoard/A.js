@@ -3,8 +3,9 @@ import { Card, Row, Col } from 'antd';
 import echarts from '@/common/importEchart';
 import ReactEcharts from 'echarts-for-react';
 
-function getTitle(name, data, index) {
-  const value = data[index][0].value[1];
+function getTitle(data) {
+  const value = data.data[0].value[1];
+  const name = data && data.name;
   if (name.includes('Voltage')) {
     return {
       name: 'V',
@@ -36,15 +37,16 @@ function getTitle(name, data, index) {
   };
 }
 
-const DeviceTypeIsA = ({ data, deviceName, loading }) => {
+const DeviceTypeIsA = ({ data, loading }) => {
+  const deviceNameArr = Object.keys(data);
   return (
     <div>
       <Card style={{ marginBottom: '10px' }} loading={loading}>
         <Row gutter={8}>
-          {data[0].length !== 0 && data[1].length !== 0 && data[2].length !== 0 ? (
-            data.map((val, index) => {
-              return (
-                <Col sm={24} lg={8} xs={24}>
+          {deviceNameArr.map((val, index) => {
+            return (
+              <Col sm={24} lg={8} xs={24}>
+                {data[val].data.length !== 0 ? (
                   <Card>
                     <ReactEcharts
                       echarts={echarts}
@@ -53,7 +55,7 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                       lazyUpdate
                       option={{
                         title: {
-                          text: deviceName[index],
+                          text: data[val].name,
                         },
                         tooltip: {
                           formatter: '{a} <br/> {c} {b}',
@@ -64,7 +66,7 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                         },
                         series: [
                           {
-                            name: deviceName[index],
+                            name: data[val].name,
                             type: 'gauge',
                             detail: {
                               formatter: '{value}',
@@ -74,11 +76,11 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                             title: {
                               fontSize: 15,
                             },
-                            max: getTitle(deviceName[index], data, index).max,
+                            max: getTitle(data[val]).max,
                             data: [
                               {
-                                value: getTitle(deviceName[index], data, index).value,
-                                name: getTitle(deviceName[index], data, index).name,
+                                value: getTitle(data[val]).value,
+                                name: getTitle(data[val]).name,
                               },
                             ],
                           },
@@ -86,67 +88,66 @@ const DeviceTypeIsA = ({ data, deviceName, loading }) => {
                       }}
                     />
                   </Card>
-                </Col>
-              );
-            })
-          ) : (
-            <Card loading />
-          )}
+                ) : (
+                  data[val].show && <Card loading />
+                )}
+              </Col>
+            );
+          })}
         </Row>
       </Card>
       {loading ? (
         <Card loading />
       ) : (
         <Card>
-          {data.map((val, index) => {
-            if (val && val.length !== 0) {
-              return (
-                <Card style={{ marginBottom: '10px' }}>
-                  <ReactEcharts
-                    echarts={echarts}
-                    notMerge
-                    lazyUpdate
-                    key={index.toString()}
-                    option={{
-                      title: {
-                        text: getTitle(deviceName[index], data, index).title,
+          {deviceNameArr.map((val, index) => {
+            return data[val].show && data[val].Line && data[val].data.length !== 0 ? (
+              <Card style={{ marginBottom: '10px' }}>
+                <ReactEcharts
+                  echarts={echarts}
+                  notMerge
+                  lazyUpdate
+                  key={index.toString()}
+                  option={{
+                    title: {
+                      text: getTitle(data[val]).title,
+                    },
+                    xAxis: {
+                      type: 'time',
+                      splitLine: {
+                        show: false,
                       },
-                      xAxis: {
-                        type: 'time',
-                        splitLine: {
-                          show: false,
-                        },
+                    },
+                    tooltip: {
+                      trigger: 'axis',
+                    },
+                    yAxis: {
+                      type: 'value',
+                      boundaryGap: [0, '100%'],
+                      splitLine: {
+                        show: false,
                       },
-                      tooltip: {
-                        trigger: 'axis',
+                      min(value) {
+                        return value.min;
                       },
-                      yAxis: {
-                        type: 'value',
-                        boundaryGap: [0, '100%'],
-                        splitLine: {
-                          show: false,
-                        },
-                        min(value) {
-                          return value.min * 0.6;
-                        },
-                        // max(value) {
-                        //   return value.max
-                        // }
+                      // max(value) {
+                      //   return value.max
+                      // }
+                    },
+                    series: [
+                      {
+                        name: data[val].name,
+                        type: 'line',
+                        smooth: true,
+                        data: data[val].data,
                       },
-                      series: [
-                        {
-                          name: deviceName[index],
-                          type: 'line',
-                          smooth: true,
-                          data: data[index],
-                        },
-                      ],
-                    }}
-                  />
-                </Card>
-              );
-            }
-            return <Card loading />;
+                    ],
+                  }}
+                />
+              </Card>
+            ) : (
+              data[val].show && <Card loading />
+            );
           })}
         </Card>
       )}
