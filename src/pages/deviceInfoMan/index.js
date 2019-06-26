@@ -44,14 +44,18 @@ class DeviceTagInfo extends React.Component {
     ];
     return (
       <PageHeaderWrapper>
-        <Card loading={tableLoading}>
+        <Card bodyStyle={{ padding: 0 }}>
           <Table
             columns={columns}
             dataSource={tableList}
             rowKey="Path"
+            loading={tableLoading}
             pagination={{
               showQuickJumper: true,
               hideOnSinglePage: true,
+              showTotal(total) {
+                return `总计 ${total} 项`;
+              },
             }}
           />
         </Card>

@@ -5,10 +5,10 @@
   "private": true,
   "scripts": {
     "presite": "cd functions && npm install",
-    "start": "cross-env APP_TYPE=site umi dev",
+    "start": "cross-env  umi dev",
     "start:no-mock": "cross-env MOCK=none umi dev",
     "build": "umi build",
-    "site": "npm run presite && cross-env APP_TYPE=site npm run build && firebase deploy && npm run docker:push",
+    "site": "npm run presite && cross-env  npm run build && firebase deploy && npm run docker:push",
     "analyze": "cross-env ANALYZE=1 umi build",
     "lint:style": "stylelint 'src/**/*.less' --syntax less",
     "lint:prettier": "check-prettier lint",

@@ -6,12 +6,7 @@ import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DeviceTypeIsA from './A';
 import DeviceTypeIsB from './B';
 import DeviceTypeIsC from './C';
-import {
-  transformDataToEchartsB,
-  transformDataToEchartsA,
-  clearDataList,
-  transformDataToEchartsC,
-} from './dataTool';
+import { transformDataToEcharts, clearDataList } from './dataTool';
 
 @connect(({ device, loading }) => ({
   devicesCollection: device.devicesCollection,
@@ -60,32 +55,23 @@ class WorkShopTwo extends Component {
   // 将数据转换成折线图数据格式
   TransformDataToChart = type => {
     const { deviceListByDeviceName } = this.props;
-    switch (type) {
-      case 'A':
-        return transformDataToEchartsA(deviceListByDeviceName);
-      case 'B':
-        return transformDataToEchartsB(deviceListByDeviceName);
-      case 'C':
-        return transformDataToEchartsC(deviceListByDeviceName);
-      default:
-        return [];
-    }
+    return transformDataToEcharts(deviceListByDeviceName, type);
   };
 
   render() {
     const { match, deviceListByDeviceName } = this.props;
     const { type } = match.params;
-    const { DEVICE_A, DEVICE_B, DEVICE_C } = this.TransformDataToChart(type);
+    const { deviceData } = this.TransformDataToChart(type);
     return (
       <PageHeaderWrapper>
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && (
-          <DeviceTypeIsA data={DEVICE_A} />
+          <DeviceTypeIsA data={deviceData} />
         )}
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'B' && (
-          <DeviceTypeIsB data={DEVICE_B} />
+          <DeviceTypeIsB data={deviceData} />
         )}
         {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'C' && (
-          <DeviceTypeIsC data={DEVICE_C} />
+          <DeviceTypeIsC data={deviceData} />
         )}
         {deviceListByDeviceName && deviceListByDeviceName.length === 0 && <Card loading />}
       </PageHeaderWrapper>

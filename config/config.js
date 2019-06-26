@@ -6,7 +6,7 @@ import defaultSettings from '../src/defaultSettings';
 import slash from 'slash2';
 
 const { pwa, primaryColor } = defaultSettings;
-const { APP_TYPE, TEST } = process.env;
+const { TEST } = process.env;
 
 const plugins = [
   [
@@ -47,23 +47,10 @@ const plugins = [
   ],
 ];
 
-// 针对 preview.pro.ant.design 的 GA 统计代码
-// 业务上不需要这个
-if (APP_TYPE === 'site') {
-  plugins.push([
-    'umi-plugin-ga',
-    {
-      code: 'UA-72788897-6',
-    },
-  ]);
-}
-
 export default {
   // add for transfer to umi
   plugins,
-  define: {
-    APP_TYPE: APP_TYPE || '',
-  },
+  define: {},
   treeShaking: true,
   targets: {
     ie: 11,

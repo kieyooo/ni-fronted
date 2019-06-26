@@ -10,7 +10,6 @@ module.exports = {
     jasmine: true,
   },
   globals: {
-    APP_TYPE: true,
     page: true,
   },
   rules: {

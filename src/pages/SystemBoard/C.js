@@ -51,7 +51,7 @@ const DeviceTypeIsC = ({ data }) => {
               />
             </Card>
           ) : (
-            data[val].show && data[val].Line && <Card loading />
+            data[val].show && data[val].Line && <Card loading style={{ marginBottom: '10px' }} />
           );
         })}
       </Card>

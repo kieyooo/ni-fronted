@@ -89,7 +89,7 @@ const DeviceTypeIsA = ({ data, loading }) => {
                     />
                   </Card>
                 ) : (
-                  data[val].show && <Card loading />
+                  data[val].show && <Card loading style={{ marginBottom: '10px' }} />
                 )}
               </Col>
             );
