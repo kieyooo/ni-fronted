@@ -68,7 +68,7 @@ function passiveLogout() {
     );
   }
   waitingForDispatch().then(dispatch => {
-    if (dispatch) dispatch({ type: 'logon/logout' });
+    if (dispatch) dispatch({ type: 'login/logout' });
   });
 }
 
@@ -88,7 +88,7 @@ export default async function request(actionUrl, options = {}, isReturnJSON = tr
       .then(response => {
         // eslint-disable-next-line prefer-destructuring
         status = response.status;
-        if (status === 401) {
+        if (status >= 300) {
           passiveLogout();
           return promiseNull;
         }
@@ -101,7 +101,7 @@ export default async function request(actionUrl, options = {}, isReturnJSON = tr
       .then(response => response);
   }
   return createHttpFetch(actionUrl, options).then(response => {
-    if (response.status === 401) {
+    if (response.status >= 300) {
       passiveLogout();
       return promiseNull;
     }

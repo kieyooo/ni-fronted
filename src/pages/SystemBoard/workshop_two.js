@@ -1,61 +1,79 @@
+/* eslint-disable consistent-return */
 import React, { Component } from 'react';
-import { Alert } from 'antd';
 import { connect } from 'dva';
+import { Card } from 'antd';
 import PageHeaderWrapper from '@/components/PageHeaderWrapper';
 import DeviceTypeIsA from './A';
+import DeviceTypeIsB from './B';
+import DeviceTypeIsC from './C';
+import { transformDataToEcharts, clearDataList } from './dataTool';
 
 @connect(({ device, loading }) => ({
-  deviceListById: device.deviceListById,
+  devicesCollection: device.devicesCollection,
+  deviceListByDeviceName: device.deviceListByDeviceName,
   getDataLoading: loading.effects['device/getDevicesById'],
 }))
 class WorkShopTwo extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    const { match } = this.props;
-    dispatch({
-      type: 'device/getDevicesById',
-      payload: {
-        id: match.params.id,
-        size: 10,
-      },
-    });
+    dispatch({ type: 'device/deleteList' });
+    dispatch({ type: 'device/getDevicesCollection' });
+    this.getData();
+    this.timer = setInterval(() => {
+      this.getData();
+    }, 3000);
   }
 
-  getDeviceName = data => {
-    if (data.length === 0) return '';
-    return data[0].path.split('.')[1];
+  componentWillUnmount() {
+    const { dispatch } = this.props;
+    clearInterval(this.timer);
+    clearDataList();
+    dispatch({ type: 'device/deleteList' });
+  }
+
+  getData = () => {
+    const { devicesCollection, match, dispatch } = this.props;
+    if (!devicesCollection || Object.keys(devicesCollection).length === 0) return [];
+    const deviceList = devicesCollection[match.params.deviceName];
+    deviceList.forEach(val => {
+      if (val.argName !== 'Datatime' && val.argName !== 'Status') {
+        dispatch({
+          type: 'device/getDevicesById',
+          payload: {
+            id: val.id,
+            size: 1,
+          },
+        });
+      }
+    });
   };
 
-  TransformDataToChart = () => {
-    const newData = [];
-    const { deviceListById } = this.props;
-    if (deviceListById.length === 0) return [];
+  getDeviceName = path => {
+    return path.split('.')[1];
+  };
 
-    deviceListById.forEach(value => {
-      newData.push({
-        x: new Date(value.timestamp.timestamp).getTime(),
-        y1: Number(value.value).toFixed(4),
-      });
-    });
-    return newData;
+  // 将数据转换成折线图数据格式
+  TransformDataToChart = type => {
+    const { deviceListByDeviceName } = this.props;
+    return transformDataToEcharts(deviceListByDeviceName, type);
   };
 
   render() {
-    const { deviceListById, getDataLoading, match } = this.props;
+    const { match, deviceListByDeviceName } = this.props;
     const { type } = match.params;
-    const deviceName = this.getDeviceName(deviceListById);
-    const data = this.TransformDataToChart();
+    const { deviceData } = this.TransformDataToChart(type);
     return (
       <PageHeaderWrapper>
-        {deviceListById.length !== 0 && type === 'A' && (
-          <DeviceTypeIsA data={data} deviceName={deviceName} loading={getDataLoading} />
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'A' && (
+          <DeviceTypeIsA data={deviceData} />
         )}
-        {deviceListById.length !== 0 && type === 'B' && (
-          <Alert type="error" message="施工中" showIcon />
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'B' && (
+          <DeviceTypeIsB data={deviceData} />
         )}
-        {deviceListById.length !== 0 && type === 'C' && (
-          <Alert type="error" message="施工中" showIcon />
+        {deviceListByDeviceName && deviceListByDeviceName.length !== 0 && type === 'C' && (
+          <DeviceTypeIsC data={deviceData} />
         )}
+        {deviceListByDeviceName && deviceListByDeviceName.length === 0 && <Card loading />}
       </PageHeaderWrapper>
     );
   }

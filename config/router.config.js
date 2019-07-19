@@ -26,7 +26,7 @@ export default [
         component: './SystemBoard/workshop_one',
       },
       {
-        path: '/device/:type/:id',
+        path: '/device/:type/:deviceName',
         name: 'systemSetting',
         hideInMenu: true,
         component: './SystemBoard/workshop_two',

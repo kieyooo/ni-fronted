@@ -1,5 +1,5 @@
 import { routerRedux } from 'dva/router';
-import login from '@/services/login';
+import * as services from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { reloadAuthorized } from '@/utils/Authorized';
 
@@ -29,7 +29,7 @@ export default {
   effects: {
     // 登陆数据处理
     *login({ payload }, { call, put }) {
-      const response = yield call(login, payload);
+      const response = yield call(services.login, payload);
       // Login successfully
       if (response && response.status === 200) {
         yield put({
@@ -45,7 +45,7 @@ export default {
 
     // 注销处理
     *logout(_, { put }) {
-      // yield call(service.logout);
+      // yield call(services.logout)
       yield put({
         type: 'changeLoginStatus',
         payload: {

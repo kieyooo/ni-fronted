@@ -8,7 +8,7 @@ import router from 'umi/router';
 const { Meta } = Card;
 
 @connect(({ device, loading }) => ({
-  deviceList: device.deviceList,
+  devicesCollection: device.devicesCollection,
   getDeviceLoading: loading.effects['device/getDevices'],
 }))
 class DeviceList extends Component {
@@ -16,11 +16,7 @@ class DeviceList extends Component {
 
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch({ type: 'device/getDevices' });
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
+    dispatch({ type: 'device/getDevicesCollection' });
   }
 
   runTo = (type, path) => {
@@ -28,35 +24,24 @@ class DeviceList extends Component {
   };
 
   render() {
-    const { deviceList, getDeviceLoading } = this.props;
+    const { getDeviceLoading, devicesCollection } = this.props;
     const { runTo } = this;
     return (
       <PageHeaderWrapper>
-        <Card style={{ marginBottom: '15px' }}>
-          <Card.Grid>设备总数</Card.Grid>
-          <Card.Grid>在线</Card.Grid>
-          <Card.Grid>离线</Card.Grid>
-          <Card.Grid>故障</Card.Grid>
-          <Card.Grid>生产</Card.Grid>
-          <Card.Grid>停机</Card.Grid>
-          <Card.Grid>保养</Card.Grid>
-        </Card>
-        {deviceList.length !== 0 ? (
-          <Card title="A类设备" style={{ marginBottom: '15px' }}>
+        {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
+          <Card title="智能电表" style={{ marginBottom: '15px' }}>
             <List
               rowKey="id"
               loading={getDeviceLoading}
               grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
-              dataSource={deviceList.filter(
-                ele => ele.type === 'NBIot' && ele.argName !== 'Datatime'
-              )}
+              dataSource={Object.keys(devicesCollection).filter(ele => ele.startsWith('NBIot'))}
               renderItem={item =>
                 item ? (
-                  <List.Item key={item.id}>
-                    <Card hoverable onClick={() => runTo('A', item.id)}>
+                  <List.Item key={item}>
+                    <Card hoverable onClick={() => runTo('A', item)}>
                       <Meta
                         avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
-                        title={`${item.type};${item.deviceName};${item.argName}`}
+                        title={item}
                       />
                     </Card>
                   </List.Item>
@@ -67,44 +52,22 @@ class DeviceList extends Component {
         ) : (
           <Card loading />
         )}
-        {deviceList.length !== 0 ? (
-          <Card title="B类设备" style={{ marginBottom: '15px' }}>
+        {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
+          <Card title="实验云设备" style={{ marginBottom: '15px' }}>
             <List
               rowKey="id"
               loading={getDeviceLoading}
               grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
-              dataSource={deviceList.filter(ele => ele.type === 'ShiYanBan')}
-              renderItem={item =>
-                item ? (
-                  <List.Item key={item.id}>
-                    <Card hoverable onClick={() => runTo('B', item.id)}>
-                      <Meta
-                        avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
-                        title={`${item.type};${item.deviceName};${item.argName}`}
-                      />
-                    </Card>
-                  </List.Item>
-                ) : null
-              }
-            />
-          </Card>
-        ) : null}
-        {deviceList.length !== 0 ? (
-          <Card title="C类设备" style={{ marginBottom: '15px' }}>
-            <List
-              rowKey="id"
-              loading={getDeviceLoading}
-              grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
-              dataSource={deviceList.filter(
-                ele => ele.type === 'Wafer_Test' || ele.type === 'RF_Test'
+              dataSource={Object.keys(devicesCollection).filter(
+                ele => !(ele.startsWith('NBIot') || ele.startsWith('Wafer') || ele.startsWith('RF'))
               )}
               renderItem={item =>
                 item ? (
-                  <List.Item key={item.id}>
-                    <Card hoverable onClick={() => runTo('C', item.id)}>
+                  <List.Item key={item}>
+                    <Card hoverable onClick={() => runTo('B', item)}>
                       <Meta
                         avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
-                        title={`${item.type};${item.deviceName};${item.argName}`}
+                        title={item}
                       />
                     </Card>
                   </List.Item>
@@ -112,7 +75,35 @@ class DeviceList extends Component {
               }
             />
           </Card>
-        ) : null}
+        ) : (
+          <Card loading />
+        )}
+        {devicesCollection && Object.keys(devicesCollection).length !== 0 ? (
+          <Card title="射频测试设备" style={{ marginBottom: '15px' }}>
+            <List
+              rowKey="id"
+              loading={getDeviceLoading}
+              grid={{ gutter: 24, lg: 3, md: 2, sm: 1, xs: 1 }}
+              dataSource={Object.keys(devicesCollection).filter(
+                ele => ele.startsWith('Wafer') || ele.startsWith('RF')
+              )}
+              renderItem={item =>
+                item ? (
+                  <List.Item key={item}>
+                    <Card hoverable onClick={() => runTo('C', item)}>
+                      <Meta
+                        avatar={<Icon type="cluster" style={{ fontSize: '20px' }} />}
+                        title={item}
+                      />
+                    </Card>
+                  </List.Item>
+                ) : null
+              }
+            />
+          </Card>
+        ) : (
+          <Card loading />
+        )}
       </PageHeaderWrapper>
     );
   }

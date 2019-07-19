@@ -1,7 +1,7 @@
 import request from '@/utils/requestWithCookie';
 
 // 登陆
-export default async function login(query) {
+export async function login(query) {
   return request(
     'POST /api/api/user/login',
     {
@@ -10,4 +10,8 @@ export default async function login(query) {
     },
     false
   );
+}
+
+export async function logout() {
+  return request('GET /api/api/user/logout', {}, false);
 }
